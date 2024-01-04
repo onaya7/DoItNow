@@ -5,6 +5,10 @@ class RegisterPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold();
+    return Scaffold(
+      body: AppBar(
+        title: const Text('Register Page'),
+      ),
+    );
   }
 }
