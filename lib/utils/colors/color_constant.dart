@@ -11,8 +11,12 @@ Color hexToColor(String hex) {
 }
 
 class ColorConstants {
-  static Color lightScaffoldBackgroundColor = hexToColor('#F9F9F9');
-  static Color darkScaffoldBackgroundColor = hexToColor('#2F2E2E');
-  static Color secondaryAppColor = hexToColor('#5E92F3');
-  static Color secondaryDarkAppColor = Colors.white;
+  static Color deepBlueColor = hexToColor('#575DFB');
+  static Color deepBlackColor = hexToColor('#1C1C1C');
+
+  static Color plainWhiteColor = hexToColor('#FFFFFF');
+  static Color plainBlackColor = hexToColor('#000000');
+  static Color plainGreyColor = hexToColor('#222222CC');
+
+  static Color lightGreyColor = hexToColor('#C8C8C8');
 }
