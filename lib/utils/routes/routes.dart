@@ -1,7 +1,8 @@
-import 'package:doitnow/pages/login_page.dart';
-import 'package:doitnow/pages/register_page.dart';
-import 'package:doitnow/pages/welcome_page.dart';
-import 'package:doitnow/pages/wrapper.dart';
+
+import 'package:doitnow/pages/auth/login_page.dart';
+import 'package:doitnow/pages/auth/register_page.dart';
+import 'package:doitnow/pages/auth/welcome_page.dart';
+import 'package:doitnow/pages/auth/wrapper.dart';
 import 'package:flutter/material.dart';
 
 Route routes(RouteSettings settings) {

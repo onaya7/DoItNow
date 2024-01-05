@@ -1,4 +1,5 @@
 import 'package:doitnow/utils/colors/color_constant.dart';
+import 'package:doitnow/utils/constants/constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -7,14 +8,12 @@ class WelcomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final w = MediaQuery.of(context).size.width;
-    final h = MediaQuery.of(context).size.height;
     return Scaffold(
         body: SingleChildScrollView(
       child: Container(
         color: ColorConstants.plainWhiteColor,
-        width: w,
-        height: h,
+        width: Constants.deviceMaxWidth(context),
+        height: Constants.deviceMaxHeight(context),
         child: Column(
           children: [
             Container(
@@ -45,10 +44,10 @@ class WelcomePage extends StatelessWidget {
                     const SizedBox(
                       height: 5,
                     ),
-                    const Text(
+                    Text(
                       'A place where you can stay on top of your task.',
                       style: TextStyle(
-                        color: Color(0xCC222222),
+                        color: ColorConstants.deepGreyColor,
                         fontSize: 16,
                         fontWeight: FontWeight.w400,
                       ),
@@ -57,7 +56,7 @@ class WelcomePage extends StatelessWidget {
             ),
             Expanded(
               child: Container(
-                width: w,
+                width: Constants.deviceMaxWidth(context),
                 padding: const EdgeInsets.only(left: 35, right: 34),
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -78,7 +77,7 @@ class WelcomePage extends StatelessWidget {
                           debugPrint('Sign in with Google');
                         },
                         child: Container(
-                          width: w,
+                          width: Constants.deviceMaxWidth(context),
                           height: 56,
                           decoration: ShapeDecoration(
                             shape: RoundedRectangleBorder(
@@ -123,7 +122,7 @@ class WelcomePage extends StatelessWidget {
                           debugPrint('Sign in with Email');
                         },
                         child: Container(
-                          width: w,
+                          width: Constants.deviceMaxWidth(context),
                           height: 56,
                           decoration: ShapeDecoration(
                             shape: RoundedRectangleBorder(
@@ -164,7 +163,7 @@ class WelcomePage extends StatelessWidget {
                       ),
                       const SizedBox(height: 24),
                       SizedBox(
-                        width: w,
+                        width: Constants.deviceMaxWidth(context),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [

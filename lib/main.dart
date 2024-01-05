@@ -15,13 +15,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       initialRoute: '/',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-        fontFamily: 'Inter'
-      ),
+      theme: ThemeData(useMaterial3: true, fontFamily: 'Inter'),
       onGenerateRoute: routes,
-      
     );
   }
 }
