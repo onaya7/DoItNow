@@ -16,7 +16,6 @@ class ColorConstants {
 
   static Color plainWhiteColor = hexToColor('#FFFFFF');
   static Color plainBlackColor = hexToColor('#000000');
-  static Color plainGreyColor = hexToColor('#222222CC');
 
   static Color lightGreyColor = hexToColor('#C8C8C8');
 }
