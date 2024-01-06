@@ -1,8 +1,6 @@
 import 'package:doitnow/utils/colors/color_constant.dart';
 import 'package:doitnow/utils/components/text_input_field.dart';
 import 'package:doitnow/utils/constants/constant.dart';
-import 'package:doitnow/utils/controllers/focus_controllers.dart';
-import 'package:doitnow/utils/controllers/text_controllers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -14,14 +12,31 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+  late TextEditingController emailController;
+  late TextEditingController nameController;
+  late TextEditingController passwordController;
+  late FocusNode emailFocus;
+  late FocusNode nameFocus;
+  late FocusNode passwordFocus;
+  @override
+  void initState() {
+    super.initState();
+    emailController = TextEditingController();
+    nameController = TextEditingController();
+    passwordController = TextEditingController();
+    emailFocus = FocusNode();
+    nameFocus = FocusNode();
+    passwordFocus = FocusNode();
+  }
+
   @override
   void dispose() {
-    Controller.emailController.dispose();
-    Controller.passwordController.dispose();
-    Controller.nameController.dispose();
-    FocusControllers.emailFocus.dispose();
-    FocusControllers.nameFocus.dispose();
-    FocusControllers.passwordFocus.dispose();
+    emailController.dispose();
+    nameController.dispose();
+    passwordController.dispose();
+    emailFocus.dispose();
+    nameFocus.dispose();
+    passwordFocus.dispose();
     super.dispose();
   }
 
@@ -31,17 +46,20 @@ class _RegisterPageState extends State<RegisterPage> {
 
     return Scaffold(
         body: SingleChildScrollView(
-          child: Container(
-                width: Constants.deviceMaxWidth(context),
-                color: ColorConstants.plainWhiteColor,
-                padding: const EdgeInsets.only(top: 57, left: 35, right: 36),
-                child: Column(
+      child: Container(
+        width: Constants.deviceMaxWidth(context),
+        color: ColorConstants.plainWhiteColor,
+        padding: const EdgeInsets.only(top: 57, left: 35, right: 36),
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            SvgPicture.asset(
-              'assets/images/arrow-left.svg',
-              width: 38,
-              height: 38,
+            GestureDetector(
+              onTap: () => Navigator.pop(context),
+              child: SvgPicture.asset(
+                'assets/images/arrow-left.svg',
+                width: 38,
+                height: 38,
+              ),
             ),
             const SizedBox(
               height: 23,
@@ -117,23 +135,14 @@ class _RegisterPageState extends State<RegisterPage> {
                         const SizedBox(
                           height: 6,
                         ),
-                        TextFormField(
-                          autofocus: true,
-                          controller: Controller.emailController,
-                          textInputAction: TextInputAction.next,
-                          focusNode: FocusControllers.emailFocus,
-                          onFieldSubmitted: (value) {
-                            FocusScope.of(context)
-                                .requestFocus(FocusControllers.nameFocus);
-                          },
-                          decoration: TextInputField.field(
-                              'vector.svg', 'Ex: abc@example.com'),
-                          validator: (value) {
-                            if (Controller.emailController.text.isEmpty) {
-                              return 'Please enter your email';
-                            }
-                            return null;
-                          },
+                        TextInputField(
+                          controller: emailController,
+                          focus: emailFocus,
+                          iconPath: 'assets/images/vector.svg',
+                          hintText: 'Ex: abc@example.com',
+                          obscureText: false,
+                          action: TextInputAction.next,
+                          requestFocus: nameFocus,
                         ),
                         const SizedBox(
                           height: 28,
@@ -149,23 +158,14 @@ class _RegisterPageState extends State<RegisterPage> {
                         const SizedBox(
                           height: 6,
                         ),
-                        TextFormField(
-                          autofocus: true,
-                          controller: Controller.nameController,
-                          textInputAction: TextInputAction.next,
-                          focusNode: FocusControllers.nameFocus,
-                          onFieldSubmitted: (value) {
-                            FocusScope.of(context)
-                                .requestFocus(FocusControllers.passwordFocus);
-                          },
-                          decoration: TextInputField.field(
-                              'profile.svg', 'Ex. Saul Ramirez'),
-                          validator: (value) {
-                            if (Controller.emailController.text.isEmpty) {
-                              return 'Please enter your email';
-                            }
-                            return null;
-                          },
+                        TextInputField(
+                          controller: nameController,
+                          focus: nameFocus,
+                          iconPath: 'assets/images/profile.svg',
+                          hintText: 'Ex. Saul Ramirez',
+                          obscureText: false,
+                          action: TextInputAction.none,
+                          requestFocus: passwordFocus,
                         ),
                         const SizedBox(
                           height: 28,
@@ -181,27 +181,20 @@ class _RegisterPageState extends State<RegisterPage> {
                         const SizedBox(
                           height: 6,
                         ),
-                        TextFormField(
-                          obscureText: true,
-                          autofocus: true,
-                          controller: Controller.passwordController,
-                          focusNode: FocusControllers.passwordFocus,
-                          decoration:
-                              TextInputField.field('lock.svg', 'Ex. 12345678'),
-                          validator: (value) {
-                            if (Controller.emailController.text.isEmpty) {
-                              return 'Please enter your email';
-                            }
-                            return null;
-                          },
-                        ),
+                        TextInputField(
+                            controller: passwordController,
+                            focus: passwordFocus,
+                            iconPath: 'assets/images/lock.svg',
+                            hintText: 'Ex. 12345678',
+                            action: TextInputAction.none,
+                            obscureText: true),
                       ],
                     )
                   ],
                 ))
           ],
-                ),
-              ),
-        ));
+        ),
+      ),
+    ));
   }
 }
