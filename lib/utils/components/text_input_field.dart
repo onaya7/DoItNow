@@ -4,37 +4,42 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 class TextInputField extends StatelessWidget {
   final TextEditingController controller;
-  final FocusNode focus;
+  final FocusNode currentFocus;
+  final FocusNode? nextFocus;
   final String iconPath;
   final String hintText;
   final bool obscureText;
-
-    final TextInputAction action;
-  final FocusNode? requestFocus;
-
-  
+  final TextInputAction action;
 
   const TextInputField(
       {required this.controller,
-      required this.focus,
+      required this.currentFocus,
+      this.nextFocus,
       required this.iconPath,
       required this.hintText,
       required this.obscureText,
-  
       required this.action,
-      this.requestFocus,
       super.key});
 
   @override
   Widget build(BuildContext context) {
+    void shiftFocus(FocusNode? currentFocus, FocusNode? nextFocus) {
+      if (nextFocus != null) {
+        currentFocus?.unfocus();
+        FocusScope.of(context).requestFocus(nextFocus);
+      } else {
+        currentFocus?.unfocus();
+      }
+    }
+
     return TextFormField(
       obscureText: obscureText,
-     
       controller: controller,
       textInputAction: action,
-      focusNode: focus,
-      onFieldSubmitted: (value) => FocusScope.of(context).requestFocus(requestFocus),
-
+      focusNode: currentFocus,
+      onEditingComplete: () {
+        shiftFocus(currentFocus, nextFocus);
+      },
       decoration: InputDecoration(
         contentPadding:
             const EdgeInsets.symmetric(horizontal: 20, vertical: 16),

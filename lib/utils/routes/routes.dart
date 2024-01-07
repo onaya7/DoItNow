@@ -1,4 +1,3 @@
-
 import 'package:doitnow/pages/auth/login_page.dart';
 import 'package:doitnow/pages/auth/register_page.dart';
 import 'package:doitnow/pages/auth/welcome_page.dart';

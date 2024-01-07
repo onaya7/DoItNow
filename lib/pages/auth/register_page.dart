@@ -8,42 +8,45 @@ class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
 
   @override
-  State<RegisterPage> createState() => _RegisterPageState();
+  RegisterPageState createState() => RegisterPageState();
 }
 
-class _RegisterPageState extends State<RegisterPage> {
-  late TextEditingController emailController;
-  late TextEditingController nameController;
-  late TextEditingController passwordController;
-  late FocusNode emailFocus;
-  late FocusNode nameFocus;
-  late FocusNode passwordFocus;
+class RegisterPageState extends State<RegisterPage> {
+  final GlobalKey formKey = GlobalKey<FormState>();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  late FocusNode _nameFocusNode;
+  late FocusNode _emailFocusNode;
+  late FocusNode _passwordFocusNode;
+
   @override
   void initState() {
     super.initState();
-    emailController = TextEditingController();
-    nameController = TextEditingController();
-    passwordController = TextEditingController();
-    emailFocus = FocusNode();
-    nameFocus = FocusNode();
-    passwordFocus = FocusNode();
+    _nameFocusNode = FocusNode();
+    _emailFocusNode = FocusNode();
+    _passwordFocusNode = FocusNode();
   }
 
   @override
   void dispose() {
-    emailController.dispose();
-    nameController.dispose();
-    passwordController.dispose();
-    emailFocus.dispose();
-    nameFocus.dispose();
-    passwordFocus.dispose();
+    _nameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    _nameFocusNode.dispose();
+    _emailFocusNode.dispose();
+    _passwordFocusNode.dispose();
     super.dispose();
+  }
+
+  void _shiftFocus(FocusNode currentFocus, FocusNode nextFocus) {
+    currentFocus.unfocus();
+    FocusScope.of(context).requestFocus(nextFocus);
   }
 
   @override
   Widget build(BuildContext context) {
-    final GlobalKey formKey = GlobalKey<FormState>();
-
     return Scaffold(
         body: SingleChildScrollView(
       child: Container(
@@ -136,13 +139,14 @@ class _RegisterPageState extends State<RegisterPage> {
                           height: 6,
                         ),
                         TextInputField(
-                          controller: emailController,
-                          focus: emailFocus,
+                          controller: _emailController,
+                          currentFocus: _emailFocusNode,
+                          nextFocus: _nameFocusNode,
                           iconPath: 'assets/images/vector.svg',
                           hintText: 'Ex: abc@example.com',
                           obscureText: false,
                           action: TextInputAction.next,
-                          requestFocus: nameFocus,
+                          // requestFocus: nameFocus,
                         ),
                         const SizedBox(
                           height: 28,
@@ -159,13 +163,13 @@ class _RegisterPageState extends State<RegisterPage> {
                           height: 6,
                         ),
                         TextInputField(
-                          controller: nameController,
-                          focus: nameFocus,
+                          controller: _nameController,
+                          currentFocus: _nameFocusNode,
+                          nextFocus: _passwordFocusNode,
                           iconPath: 'assets/images/profile.svg',
                           hintText: 'Ex. Saul Ramirez',
                           obscureText: false,
-                          action: TextInputAction.none,
-                          requestFocus: passwordFocus,
+                          action: TextInputAction.next,
                         ),
                         const SizedBox(
                           height: 28,
@@ -182,12 +186,58 @@ class _RegisterPageState extends State<RegisterPage> {
                           height: 6,
                         ),
                         TextInputField(
-                            controller: passwordController,
-                            focus: passwordFocus,
+                            controller: _passwordController,
+                            currentFocus: _passwordFocusNode,
                             iconPath: 'assets/images/lock.svg',
                             hintText: 'Ex. 12345678',
-                            action: TextInputAction.none,
+                            action: TextInputAction.done,
                             obscureText: true),
+                        const SizedBox(
+                          height: 59,
+                        ),
+                        SizedBox(
+                          width: Constants.deviceMaxWidth(context),
+                          child: ElevatedButton(
+                            style: ButtonStyle(
+                                padding: MaterialStateProperty.all<EdgeInsets>(
+                                    const EdgeInsets.symmetric(
+                                  vertical: 16,
+                                )),
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                        ColorConstants.deepBlueColor),
+                                shape: MaterialStateProperty.all<
+                                        RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(16.0),
+                                ))),
+                            onPressed: () {},
+                            child: Text(
+                              "Register",
+                              style: TextStyle(
+                                  letterSpacing: -0.18,
+                                  fontWeight: FontWeight.w700,
+                                  color: ColorConstants.plainWhiteColor),
+                            ),
+                          ),
+                        ),
+
+                        // child: Container(
+                        //   width: Constants.deviceMaxWidth(context),
+                        //   alignment: Alignment.center,
+                        //   padding: const EdgeInsets.symmetric(vertical: 16),
+                        //   decoration: ShapeDecoration(
+                        //       color: ColorConstants.deepBlueColor,
+                        //       shape: RoundedRectangleBorder(
+                        //           borderRadius: BorderRadius.circular(16))),
+                        // child: Text("Register",
+
+                        // style: TextStyle(
+
+                        //   letterSpacing: -0.18,
+                        //   fontWeight: FontWeight.w700,
+                        //   color: ColorConstants.plainWhiteColor
+                        // ),),
                       ],
                     )
                   ],
