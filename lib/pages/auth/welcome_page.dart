@@ -1,4 +1,5 @@
 import 'package:doitnow/utils/colors/color_constant.dart';
+import 'package:doitnow/utils/components/already_have.dart';
 import 'package:doitnow/utils/constants/constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -162,41 +163,7 @@ class WelcomePage extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 24),
-                      SizedBox(
-                        width: Constants.deviceMaxWidth(context),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              'Already have an account?',
-                              style: TextStyle(
-                                color: ColorConstants.plainBlackColor,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w400,
-                                letterSpacing: -0.18,
-                              ),
-                            ),
-                            const SizedBox(
-                              width: 6,
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                debugPrint('Login user');
-                              },
-                              child: Text(
-                                'Login',
-                                style: TextStyle(
-                                    color: ColorConstants.deepBlueColor,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w700,
-                                    decoration: TextDecoration.underline,
-                                    decorationColor:
-                                        ColorConstants.deepBlueColor),
-                              ),
-                            ),
-                          ],
-                        ),
-                      )
+                      const AlreadyHave(authName: 'Login')
                     ]),
               ),
             ),

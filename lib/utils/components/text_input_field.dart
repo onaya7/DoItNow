@@ -10,6 +10,7 @@ class TextInputField extends StatelessWidget {
   final String hintText;
   final bool obscureText;
   final TextInputAction action;
+  final String? Function(String?)? validator;
 
   const TextInputField(
       {required this.controller,
@@ -19,6 +20,7 @@ class TextInputField extends StatelessWidget {
       required this.hintText,
       required this.obscureText,
       required this.action,
+      required this.validator,
       super.key});
 
   @override
@@ -69,12 +71,7 @@ class TextInputField extends StatelessWidget {
           borderRadius: BorderRadius.circular(16),
         ),
       ),
-      validator: (value) {
-        if (controller.text.isEmpty) {
-          return 'Please enter your email';
-        }
-        return null;
-      },
+      validator: validator,
     );
   }
 }

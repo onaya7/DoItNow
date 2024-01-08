@@ -1,6 +1,9 @@
 import 'package:doitnow/utils/colors/color_constant.dart';
+import 'package:doitnow/utils/components/already_have.dart';
+import 'package:doitnow/utils/components/button.dart';
 import 'package:doitnow/utils/components/text_input_field.dart';
 import 'package:doitnow/utils/constants/constant.dart';
+import 'package:doitnow/utils/validators/validators.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -12,7 +15,7 @@ class RegisterPage extends StatefulWidget {
 }
 
 class RegisterPageState extends State<RegisterPage> {
-  final GlobalKey formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -38,11 +41,6 @@ class RegisterPageState extends State<RegisterPage> {
     _emailFocusNode.dispose();
     _passwordFocusNode.dispose();
     super.dispose();
-  }
-
-  void _shiftFocus(FocusNode currentFocus, FocusNode nextFocus) {
-    currentFocus.unfocus();
-    FocusScope.of(context).requestFocus(nextFocus);
   }
 
   @override
@@ -121,7 +119,7 @@ class RegisterPageState extends State<RegisterPage> {
               height: 38,
             ),
             Form(
-                key: formKey,
+                key: _formKey,
                 child: Column(
                   children: <Widget>[
                     Column(
@@ -146,7 +144,9 @@ class RegisterPageState extends State<RegisterPage> {
                           hintText: 'Ex: abc@example.com',
                           obscureText: false,
                           action: TextInputAction.next,
-                          // requestFocus: nameFocus,
+                          validator: (value) {
+                            return Validators.validateEmail(value);
+                          },
                         ),
                         const SizedBox(
                           height: 28,
@@ -170,6 +170,9 @@ class RegisterPageState extends State<RegisterPage> {
                           hintText: 'Ex. Saul Ramirez',
                           obscureText: false,
                           action: TextInputAction.next,
+                          validator: (value) {
+                            return Validators.validateName(value);
+                          },
                         ),
                         const SizedBox(
                           height: 28,
@@ -186,58 +189,24 @@ class RegisterPageState extends State<RegisterPage> {
                           height: 6,
                         ),
                         TextInputField(
-                            controller: _passwordController,
-                            currentFocus: _passwordFocusNode,
-                            iconPath: 'assets/images/lock.svg',
-                            hintText: 'Ex. 12345678',
-                            action: TextInputAction.done,
-                            obscureText: true),
+                          controller: _passwordController,
+                          currentFocus: _passwordFocusNode,
+                          iconPath: 'assets/images/lock.svg',
+                          hintText: 'Ex. 12345678',
+                          action: TextInputAction.done,
+                          obscureText: true,
+                          validator: (value) {
+                            return Validators.validatePassword(value);
+                          },
+                        ),
                         const SizedBox(
                           height: 59,
                         ),
-                        SizedBox(
-                          width: Constants.deviceMaxWidth(context),
-                          child: ElevatedButton(
-                            style: ButtonStyle(
-                                padding: MaterialStateProperty.all<EdgeInsets>(
-                                    const EdgeInsets.symmetric(
-                                  vertical: 16,
-                                )),
-                                backgroundColor:
-                                    MaterialStateProperty.all<Color>(
-                                        ColorConstants.deepBlueColor),
-                                shape: MaterialStateProperty.all<
-                                        RoundedRectangleBorder>(
-                                    RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(16.0),
-                                ))),
-                            onPressed: () {},
-                            child: Text(
-                              "Register",
-                              style: TextStyle(
-                                  letterSpacing: -0.18,
-                                  fontWeight: FontWeight.w700,
-                                  color: ColorConstants.plainWhiteColor),
-                            ),
-                          ),
+                        Button(buttonName: 'Register', formKey: _formKey),
+                        const SizedBox(
+                          height: 16,
                         ),
-
-                        // child: Container(
-                        //   width: Constants.deviceMaxWidth(context),
-                        //   alignment: Alignment.center,
-                        //   padding: const EdgeInsets.symmetric(vertical: 16),
-                        //   decoration: ShapeDecoration(
-                        //       color: ColorConstants.deepBlueColor,
-                        //       shape: RoundedRectangleBorder(
-                        //           borderRadius: BorderRadius.circular(16))),
-                        // child: Text("Register",
-
-                        // style: TextStyle(
-
-                        //   letterSpacing: -0.18,
-                        //   fontWeight: FontWeight.w700,
-                        //   color: ColorConstants.plainWhiteColor
-                        // ),),
+                        const AlreadyHave(authName: 'Login')
                       ],
                     )
                   ],
