@@ -3,7 +3,7 @@ class Validators {
     if (value == null || value.isEmpty) {
       return 'Please enter an email address';
     }
-    if (!value.contains('@')) {
+    if (!RegExp(r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$').hasMatch(value)) {
       return 'Please enter a valid email address';
     }
     return null;
@@ -22,6 +22,9 @@ class Validators {
     }
     if (value.length < 6) {
       return 'Password must be at least 6 characters long';
+    }
+    if( !RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{6,}$').hasMatch(value)){
+      return 'Password must contain at least one uppercase letter, one lowercase letter and one number';
     }
     return null;
   }
