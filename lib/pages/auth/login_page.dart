@@ -1,6 +1,7 @@
 import 'package:doitnow/utils/colors/color_constant.dart';
 import 'package:doitnow/utils/components/already_have.dart';
 import 'package:doitnow/utils/components/auth_button.dart';
+import 'package:doitnow/utils/components/google_auth_button.dart';
 import 'package:doitnow/utils/components/text_input_field.dart';
 import 'package:doitnow/utils/constants/constant.dart';
 import 'package:doitnow/utils/validators/validators.dart';
@@ -161,20 +162,24 @@ class _LoginPageState extends State<LoginPage> {
                         const SizedBox(
                           height: 28,
                         ),
-                        Divider(
-                          color: ColorConstants.plainBlackColor,
-                          thickness: 1,
-                        ),
-                        const SizedBox(
-                          height: 28,
-                        ),
-                        authButton(
+                        AuthButton(
                             buttonName: 'Login',
                             formKey: _formKey,
                             emailControllervalue: _emailController.text,
                             passwordControllervalue: _passwordController.text),
                         const SizedBox(
-                          height: 16,
+                          height: 29,
+                        ),
+                        Divider(
+                          color: ColorConstants.plainBlackColor,
+                          thickness: 1,
+                        ),
+                        const SizedBox(
+                          height: 29,
+                        ),
+                        const GoogleAuthButton(),
+                        const SizedBox(
+                          height: 40,
                         ),
                         const AlreadyHave(
                             text: 'Don\'t have an account?',
