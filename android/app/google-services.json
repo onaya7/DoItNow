@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "902850004705",
+    "project_id": "doitnow-e04d4",
+    "storage_bucket": "doitnow-e04d4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:902850004705:android:1fbb6a7c7712c1dcb019a0",
+        "android_client_info": {
+          "package_name": "com.example.doitnow"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBkT9uMKMPD9R5TRSaIpeQEfRKMs0jUvD4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
