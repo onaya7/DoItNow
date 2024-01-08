@@ -1,6 +1,6 @@
 import 'package:doitnow/utils/colors/color_constant.dart';
 import 'package:doitnow/utils/components/already_have.dart';
-import 'package:doitnow/utils/components/button.dart';
+import 'package:doitnow/utils/components/auth_button.dart';
 import 'package:doitnow/utils/components/text_input_field.dart';
 import 'package:doitnow/utils/constants/constant.dart';
 import 'package:doitnow/utils/validators/validators.dart';
@@ -145,7 +145,7 @@ class RegisterPageState extends State<RegisterPage> {
                           obscureText: false,
                           action: TextInputAction.next,
                           validator: (value) {
-                            return Validators.validateEmail(value);
+                            return RegisterValidators.validateEmail(value);
                           },
                         ),
                         const SizedBox(
@@ -171,7 +171,7 @@ class RegisterPageState extends State<RegisterPage> {
                           obscureText: false,
                           action: TextInputAction.next,
                           validator: (value) {
-                            return Validators.validateName(value);
+                            return RegisterValidators.validateName(value);
                           },
                         ),
                         const SizedBox(
@@ -196,17 +196,23 @@ class RegisterPageState extends State<RegisterPage> {
                           action: TextInputAction.done,
                           obscureText: true,
                           validator: (value) {
-                            return Validators.validatePassword(value);
+                            return RegisterValidators.validatePassword(value);
                           },
                         ),
                         const SizedBox(
                           height: 59,
                         ),
-                        Button(buttonName: 'Register', formKey: _formKey),
+                        AuthButton(
+                            buttonName: 'Register',
+                            formKey: _formKey,
+                            emailControllervalue: _emailController.text,
+                            nameControllervalue: _nameController.text,
+                            passwordControllervalue: _passwordController.text),
                         const SizedBox(
                           height: 16,
                         ),
-                        const AlreadyHave(authName: 'Login')
+                        const AlreadyHave(
+                            text: 'Already have an account?', authName: 'Login')
                       ],
                     )
                   ],

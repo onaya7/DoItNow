@@ -1,8 +1,9 @@
 import 'package:doitnow/utils/colors/color_constant.dart';
 import 'package:doitnow/utils/components/already_have.dart';
+import 'package:doitnow/utils/components/email_auth_button.dart';
+import 'package:doitnow/utils/components/google_auth_button.dart';
 import 'package:doitnow/utils/constants/constant.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class WelcomePage extends StatelessWidget {
   const WelcomePage({super.key});
@@ -73,97 +74,12 @@ class WelcomePage extends StatelessWidget {
                       const SizedBox(
                         height: 18,
                       ),
-                      GestureDetector(
-                        onTap: () {
-                          debugPrint('Sign in with Google');
-                        },
-                        child: Container(
-                          width: Constants.deviceMaxWidth(context),
-                          height: 56,
-                          decoration: ShapeDecoration(
-                            shape: RoundedRectangleBorder(
-                              side: BorderSide(
-                                width: 1.50,
-                                color: ColorConstants.deepBlackColor,
-                              ),
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                            color: ColorConstants.plainWhiteColor,
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              SizedBox(
-                                width: 24,
-                                height: 24,
-                                child: Image.asset(
-                                  'assets/images/google.png',
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              Text(
-                                'Continue with Google',
-                                style: TextStyle(
-                                    color: ColorConstants.deepBlackColor,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w700,
-                                    letterSpacing: -0.18),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
+                      const GoogleAuthButton(),
                       const SizedBox(height: 11),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.pushNamed(context, '/register');
-                          debugPrint('Sign in with Email');
-                        },
-                        child: Container(
-                          width: Constants.deviceMaxWidth(context),
-                          height: 56,
-                          decoration: ShapeDecoration(
-                            shape: RoundedRectangleBorder(
-                              side: BorderSide(
-                                width: 1.50,
-                                color: ColorConstants.deepBlackColor,
-                              ),
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                            color: ColorConstants.plainWhiteColor,
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                'Continue with Email',
-                                style: TextStyle(
-                                    color: ColorConstants.deepBlackColor,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w700,
-                                    letterSpacing: -0.18),
-                              ),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              Container(
-                                alignment: Alignment.center,
-                                child: SvgPicture.asset(
-                                    'assets/images/vector.svg',
-                                    fit: BoxFit.cover,
-                                    colorFilter: ColorFilter.mode(
-                                        ColorConstants.deepBlueColor,
-                                        BlendMode.srcIn)),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
+                      const EmailAuthButton(),
                       const SizedBox(height: 24),
-                      const AlreadyHave(authName: 'Login')
+                      const AlreadyHave(
+                          text: 'Already have an account?', authName: 'Login')
                     ]),
               ),
             ),

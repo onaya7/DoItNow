@@ -3,8 +3,10 @@ import 'package:doitnow/utils/constants/constant.dart';
 import 'package:flutter/material.dart';
 
 class AlreadyHave extends StatelessWidget {
+  final String text;
   final String authName;
   const AlreadyHave({
+    required this.text,
     required this.authName,
     super.key,
   });
@@ -17,7 +19,7 @@ class AlreadyHave extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            'Already have an account?',
+            text,
             style: TextStyle(
               color: ColorConstants.plainBlackColor,
               fontSize: 16,
@@ -30,7 +32,13 @@ class AlreadyHave extends StatelessWidget {
           ),
           GestureDetector(
             onTap: () {
-              debugPrint('$authName user');
+              if (authName == 'Login') {
+                Navigator.pushNamed(context, '/login');
+              } else if (authName == 'Register') {
+                Navigator.pushNamed(context, '/register');
+              } else {
+                debugPrint('No user');
+              }
             },
             child: Text(
               authName,

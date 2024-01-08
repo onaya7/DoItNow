@@ -43,6 +43,14 @@ class TextInputField extends StatelessWidget {
         shiftFocus(currentFocus, nextFocus);
       },
       decoration: InputDecoration(
+        focusedErrorBorder: OutlineInputBorder(
+          borderSide: const BorderSide(color: Colors.red, width: 1.50),
+          borderRadius: BorderRadius.circular(16),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderSide: const BorderSide(color: Colors.red, width: 1.50),
+          borderRadius: BorderRadius.circular(16),
+        ),
         contentPadding:
             const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
         prefixIcon: Container(

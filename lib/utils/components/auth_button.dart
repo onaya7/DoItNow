@@ -1,11 +1,19 @@
 import 'package:doitnow/utils/colors/color_constant.dart';
 import 'package:doitnow/utils/constants/constant.dart';
 import 'package:flutter/material.dart';
-class Button extends StatelessWidget {
+
+class AuthButton extends StatelessWidget {
   final String buttonName;
+  final String emailControllervalue;
+  final String? nameControllervalue;
+  final String passwordControllervalue;
+
   final GlobalKey<FormState> formKey;
-  const Button({
+  const AuthButton({
     required this.buttonName,
+    required this.emailControllervalue,
+    this.nameControllervalue,
+    required this.passwordControllervalue,
     required this.formKey,
     super.key,
   });
@@ -30,7 +38,6 @@ class Button extends StatelessWidget {
                 RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16.0),
             ))),
-        
         child: Text(
           buttonName,
           style: TextStyle(
@@ -38,10 +45,11 @@ class Button extends StatelessWidget {
               fontWeight: FontWeight.w700,
               color: ColorConstants.plainWhiteColor),
         ),
-
         onPressed: () {
           if (formKey.currentState!.validate()) {
-            
+            debugPrint(emailControllervalue);
+            debugPrint(nameControllervalue);
+            debugPrint(passwordControllervalue);
             debugPrint('Button pressed');
           }
         },
@@ -49,3 +57,4 @@ class Button extends StatelessWidget {
     );
   }
 }
+
