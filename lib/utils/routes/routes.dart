@@ -6,13 +6,13 @@ import 'package:flutter/material.dart';
 
 Route routes(RouteSettings settings) {
   switch (settings.name) {
-    case '/wrapper':
-      return MaterialPageRoute(builder: (_) => const Wrapper());
+    case '/welcome':
+      return MaterialPageRoute(builder: (_) => const WelcomePage());
     case '/login':
       return MaterialPageRoute(builder: (_) => const LoginPage());
     case '/register':
       return MaterialPageRoute(builder: (_) => const RegisterPage());
     default:
-      return MaterialPageRoute(builder: (_) => const WelcomePage());
+      return MaterialPageRoute(builder: (_) => const Wrapper());
   }
 }

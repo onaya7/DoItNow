@@ -2,7 +2,6 @@ import 'package:doitnow/models/user_model.dart';
 import 'package:doitnow/services/firebase_auth.dart';
 import 'package:doitnow/utils/colors/color_constant.dart';
 import 'package:doitnow/utils/constants/constant.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class AuthButton extends StatefulWidget {
@@ -65,18 +64,22 @@ class _AuthButtonState extends State<AuthButton> {
         onPressed: () async {
           if (widget.formKey.currentState!.validate()) {
             if (widget.buttonName == 'Login') {
-              Navigator.pushNamed(context, '/home');
+              UserData? result = await _auth.signInWithEmailAndPassword(
+                  widget.emailControllervalue, widget.passwordControllervalue);
+              if (result != null) {
+                debugPrint('${result.email} is logged in');
+              } else {
+                debugPrint('error logging in');
+              }
             } else if (widget.buttonName == 'Register') {
               UserData? result = await _auth.registerWithEmailAndPassword(
                   widget.emailControllervalue, widget.passwordControllervalue);
               if (result != null) {
-                debugPrint("hello ${result.email}");
-                debugPrint('Register success');
+                debugPrint('${result.email} has registered ');
+              } else {
+                debugPrint('error registering account');
               }
-            } else {
-              debugPrint('No user');
             }
-
             debugPrint('Button pressed');
           }
         },
