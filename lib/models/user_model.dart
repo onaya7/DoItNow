@@ -1,18 +1,11 @@
-// class UserData {
-//   int id;
-//   String token;
+class UserData {
+  final String? uid;
+  final String? email;
+  final String? name;
 
-//   UserData({required this.id, required this.token});
-
-//   UserData.fromJson(Map<String, dynamic> json) {
-//     id = json['id'];
-//     token = json['token'];
-//   }
-
-//   Map<String, dynamic> toJson() {
-//     final Map<String, dynamic> data = <String, dynamic>{};
-//     data['id'] = id;
-//     data['token'] = token;
-//     return data;
-//   }
-// }
+  UserData({
+    required this.uid,
+    required this.email,
+    required this.name,
+  });
+}

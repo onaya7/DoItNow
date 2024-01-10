@@ -1,14 +1,17 @@
+import 'package:doitnow/models/user_model.dart';
+import 'package:doitnow/services/firebase_auth.dart';
 import 'package:doitnow/utils/colors/color_constant.dart';
 import 'package:doitnow/utils/constants/constant.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class AuthButton extends StatelessWidget {
+class AuthButton extends StatefulWidget {
   final String buttonName;
   final String emailControllervalue;
   final String? nameControllervalue;
   final String passwordControllervalue;
-
   final GlobalKey<FormState> formKey;
+
   const AuthButton({
     required this.buttonName,
     required this.emailControllervalue,
@@ -17,6 +20,20 @@ class AuthButton extends StatelessWidget {
     required this.formKey,
     super.key,
   });
+
+  @override
+  State<AuthButton> createState() => _AuthButtonState();
+}
+
+class _AuthButtonState extends State<AuthButton> {
+  final FirebaseAuthService _auth = FirebaseAuthService();
+  bool _isloading = false;
+
+  toogleLoading() {
+    setState(() {
+      _isloading = !_isloading;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,17 +56,27 @@ class AuthButton extends StatelessWidget {
               borderRadius: BorderRadius.circular(16.0),
             ))),
         child: Text(
-          buttonName,
+          widget.buttonName,
           style: TextStyle(
               letterSpacing: -0.18,
               fontWeight: FontWeight.w700,
               color: ColorConstants.plainWhiteColor),
         ),
-        onPressed: () {
-          if (formKey.currentState!.validate()) {
-            debugPrint(emailControllervalue);
-            debugPrint(nameControllervalue);
-            debugPrint(passwordControllervalue);
+        onPressed: () async {
+          if (widget.formKey.currentState!.validate()) {
+            if (widget.buttonName == 'Login') {
+              Navigator.pushNamed(context, '/home');
+            } else if (widget.buttonName == 'Register') {
+              UserData? result = await _auth.registerWithEmailAndPassword(
+                  widget.emailControllervalue, widget.passwordControllervalue);
+              if (result != null) {
+                debugPrint("hello ${result.email}");
+                debugPrint('Register success');
+              }
+            } else {
+              debugPrint('No user');
+            }
+
             debugPrint('Button pressed');
           }
         },
@@ -57,4 +84,3 @@ class AuthButton extends StatelessWidget {
     );
   }
 }
-

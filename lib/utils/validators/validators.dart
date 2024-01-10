@@ -26,7 +26,7 @@ class RegisterValidators {
     }
     if (!RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{6,}$')
         .hasMatch(value)) {
-      return '*Password must contain at least\n*one uppercase letter\n*one lowercase letter\n*one number';
+      return '*contains at least\n*one uppercase letter\n*contains one lowercase letter\n*contains one number';
     }
     return null;
   }

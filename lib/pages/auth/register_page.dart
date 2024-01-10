@@ -209,7 +209,7 @@ class RegisterPageState extends State<RegisterPage> {
                             nameControllervalue: _nameController.text,
                             passwordControllervalue: _passwordController.text),
                         const SizedBox(
-                          height: 16,
+                          height: 40,
                         ),
                         const AlreadyHave(
                             text: 'Already have an account?', authName: 'Login')
