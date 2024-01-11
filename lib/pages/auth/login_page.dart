@@ -46,29 +46,35 @@ class _LoginPageState extends State<LoginPage> {
   void _loginUser() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
-
       setState(() {
         _isLoading = !_isLoading;
       });
-
       UserData? user = await _auth.signInWithEmailAndPassword(
           _emailController.text, _passwordController.text);
-
       setState(() {
         _isLoading = !_isLoading;
       });
-
       if (user != null) {
         debugPrint('User logged in');
-        Navigator.pushReplacementNamed(context, '/home');
+        if (mounted) {
+          Navigator.pushReplacementNamed(context, '/home');
+        }
       } else {
         debugPrint('Error logging user in');
-        // ScaffoldMessenger.of(context).showSnackBar(
-        //   SnackBar(
-        //     content: Text('User not registered'),
-        //   ),
-        // );
-        // Navigator.pushReplacementNamed(context, '/home');
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: const Text('User not logged in Invalid Credentials!!!',
+                  style: TextStyle(color: Colors.white)),
+              backgroundColor: ColorConstants.deepBlueColor,
+              duration: const Duration(seconds: 3),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16.0),
+              ),
+              behavior: SnackBarBehavior.floating,
+            ),
+          );
+        }
       }
     }
   }

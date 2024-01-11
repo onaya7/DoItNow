@@ -50,29 +50,28 @@ class RegisterPageState extends State<RegisterPage> {
   _registerUser() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
-
       setState(() {
         _isLoading = !_isLoading;
       });
-
       UserData? user = await _auth.registerWithEmailAndPassword(
           _emailController.text, _passwordController.text);
-
       setState(() {
         _isLoading = !_isLoading;
       });
-
       if (user != null) {
         debugPrint('User registered');
-        Navigator.pushReplacementNamed(context, '/home');
+        if (mounted) {
+          Navigator.pushReplacementNamed(context, '/home');
+        }
       } else {
         debugPrint('Error registering user ');
-        // ScaffoldMessenger.of(context).showSnackBar(
-        //   SnackBar(
-        //     content: Text('User not registered'),
-        //   ),
-        // );
-        // Navigator.pushReplacementNamed(context, '/home');
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('User not registered'),
+            ),
+          );
+        }
       }
     }
   }
