@@ -36,8 +36,6 @@ class AlreadyHave extends StatelessWidget {
                 Navigator.pushNamed(context, '/login');
               } else if (authName == 'Register') {
                 Navigator.pushNamed(context, '/register');
-              } else {
-                debugPrint('No user');
               }
             },
             child: Text(
