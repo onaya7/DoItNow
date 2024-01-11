@@ -12,7 +12,9 @@ Route routes(RouteSettings settings) {
       return MaterialPageRoute(builder: (_) => const LoginPage());
     case '/register':
       return MaterialPageRoute(builder: (_) => const RegisterPage());
+    case '/':
+      return MaterialPageRoute(builder: (_) => const AuthWrapper());
     default:
-      return MaterialPageRoute(builder: (_) => const Wrapper());
+      return MaterialPageRoute(builder: (_) => const AuthWrapper());
   }
 }

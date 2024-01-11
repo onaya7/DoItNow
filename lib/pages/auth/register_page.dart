@@ -1,6 +1,7 @@
+import 'package:doitnow/services/firebase_auth.dart';
 import 'package:doitnow/utils/colors/color_constant.dart';
 import 'package:doitnow/utils/components/already_have.dart';
-import 'package:doitnow/utils/components/auth_button.dart';
+import 'package:doitnow/utils/components/custom_button.dart';
 import 'package:doitnow/utils/components/text_input_field.dart';
 import 'package:doitnow/utils/constants/constant.dart';
 import 'package:doitnow/utils/validators/validators.dart';
@@ -19,6 +20,7 @@ class RegisterPageState extends State<RegisterPage> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final FirebaseAuthService _auth = FirebaseAuthService();
 
   late FocusNode _nameFocusNode;
   late FocusNode _emailFocusNode;
@@ -43,6 +45,19 @@ class RegisterPageState extends State<RegisterPage> {
     super.dispose();
   }
 
+  _registerUser() async {
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+      try {
+        await _auth.registerWithEmailAndPassword(
+            _emailController.text, _passwordController.text);
+        debugPrint('User registered');
+      } catch (e) {
+        debugPrint('$e');
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,7 +70,7 @@ class RegisterPageState extends State<RegisterPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             GestureDetector(
-              onTap: () => Navigator.pop(context),
+              onTap: () => Navigator.pushReplacementNamed(context, '/welcome'),
               child: SvgPicture.asset(
                 'assets/images/arrow-left.svg',
                 width: 38,
@@ -144,9 +159,8 @@ class RegisterPageState extends State<RegisterPage> {
                           hintText: 'Ex: abc@example.com',
                           obscureText: false,
                           action: TextInputAction.next,
-                          validator: (value) {
-                            return RegisterValidators.validateEmail(value);
-                          },
+                          validator: (value) =>
+                              RegisterValidators.validateEmail(value),
                         ),
                         const SizedBox(
                           height: 28,
@@ -170,9 +184,8 @@ class RegisterPageState extends State<RegisterPage> {
                           hintText: 'Ex. Saul Ramirez',
                           obscureText: false,
                           action: TextInputAction.next,
-                          validator: (value) {
-                            return RegisterValidators.validateName(value);
-                          },
+                          validator: (value) =>
+                              RegisterValidators.validateName(value),
                         ),
                         const SizedBox(
                           height: 28,
@@ -195,19 +208,16 @@ class RegisterPageState extends State<RegisterPage> {
                           hintText: 'Ex. 12345678',
                           action: TextInputAction.done,
                           obscureText: true,
-                          validator: (value) {
-                            return RegisterValidators.validatePassword(value);
-                          },
+                          validator: (value) =>
+                              RegisterValidators.validatePassword(value),
                         ),
                         const SizedBox(
                           height: 59,
                         ),
-                        AuthButton(
-                            buttonName: 'Register',
-                            formKey: _formKey,
-                            emailControllervalue: _emailController.text,
-                            nameControllervalue: _nameController.text,
-                            passwordControllervalue: _passwordController.text),
+                        CustomButton(
+                          buttonName: 'Register',
+                          onTap: _registerUser,
+                        ),
                         const SizedBox(
                           height: 40,
                         ),

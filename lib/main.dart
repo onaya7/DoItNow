@@ -1,3 +1,4 @@
+import 'package:doitnow/models/user_model.dart';
 import 'package:doitnow/services/firebase_auth.dart';
 import 'package:doitnow/utils/routes/routes.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -11,22 +12,22 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final _auth = FirebaseAuthService();
+  
+  MyApp({super.key});
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    final FirebaseAuthService auth = FirebaseAuthService();
-    return StreamProvider.value(
-      initialData: auth.user,
-      value: auth.user,
+    return StreamProvider<UserData?>(
+      create: (context) => _auth.userChanges,
+      initialData: null,
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Flutter Demo',
         initialRoute: '/',
         theme: ThemeData(useMaterial3: true, fontFamily: 'Inter'),
         onGenerateRoute: routes,

@@ -11,8 +11,8 @@ class FirebaseAuthService {
         : null;
   }
 
-   Stream<UserData?> get user {
-    return _auth.authStateChanges().map(_userFromFirebaseUser); 
+  Stream<UserData?> get userChanges {
+    return _auth.authStateChanges().map(_userFromFirebaseUser);
   }
 
   Future<UserData?> registerWithEmailAndPassword(
@@ -37,7 +37,6 @@ class FirebaseAuthService {
     return null;
   }
 
-
   Future<UserData?> signInWithEmailAndPassword(
       String email, String password) async {
     try {
@@ -58,13 +57,7 @@ class FirebaseAuthService {
     return null;
   }
 
-
   Future<void> signOut() async {
     await _auth.signOut();
   }
-
-
-
-
 }
-

@@ -1,6 +1,7 @@
+import 'package:doitnow/services/firebase_auth.dart';
 import 'package:doitnow/utils/colors/color_constant.dart';
 import 'package:doitnow/utils/components/already_have.dart';
-import 'package:doitnow/utils/components/auth_button.dart';
+import 'package:doitnow/utils/components/custom_button.dart';
 import 'package:doitnow/utils/components/google_auth_button.dart';
 import 'package:doitnow/utils/components/text_input_field.dart';
 import 'package:doitnow/utils/constants/constant.dart';
@@ -19,6 +20,7 @@ class _LoginPageState extends State<LoginPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final FirebaseAuthService _auth = FirebaseAuthService();
 
   late FocusNode _emailFocusNode;
   late FocusNode _passwordFocusNode;
@@ -39,6 +41,19 @@ class _LoginPageState extends State<LoginPage> {
     _passwordFocusNode.dispose();
   }
 
+  void _loginUser() async {
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+      try {
+        await _auth.signInWithEmailAndPassword(
+            _emailController.text, _passwordController.text);
+        debugPrint('User logged in');
+      } catch (e) {
+        debugPrint('$e');
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,7 +66,7 @@ class _LoginPageState extends State<LoginPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             GestureDetector(
-              onTap: () => Navigator.pop(context),
+              onTap: () => Navigator.pushReplacementNamed(context, '/welcome'),
               child: SvgPicture.asset(
                 'assets/images/arrow-left.svg',
                 width: 38,
@@ -117,9 +132,8 @@ class _LoginPageState extends State<LoginPage> {
                           hintText: 'Ex: abc@example.com',
                           obscureText: false,
                           action: TextInputAction.next,
-                          validator: (value) {
-                            return LoginValidators.validateEmail(value);
-                          },
+                          validator: (value) =>
+                              LoginValidators.validateEmail(value),
                         ),
                         const SizedBox(
                           height: 28,
@@ -142,9 +156,8 @@ class _LoginPageState extends State<LoginPage> {
                           hintText: 'Ex. 12345678',
                           action: TextInputAction.done,
                           obscureText: true,
-                          validator: (value) {
-                            return LoginValidators.validatePassword(value);
-                          },
+                          validator: (value) =>
+                              LoginValidators.validatePassword(value),
                         ),
                         const SizedBox(
                           height: 6,
@@ -162,11 +175,10 @@ class _LoginPageState extends State<LoginPage> {
                         const SizedBox(
                           height: 28,
                         ),
-                        AuthButton(
-                            buttonName: 'Login',
-                            formKey: _formKey,
-                            emailControllervalue: _emailController.text,
-                            passwordControllervalue: _passwordController.text),
+                        CustomButton(
+                          buttonName: 'Login',
+                          onTap: _loginUser,
+                        ),
                         const SizedBox(
                           height: 29,
                         ),

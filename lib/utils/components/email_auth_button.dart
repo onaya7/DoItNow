@@ -13,7 +13,6 @@ class EmailAuthButton extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         Navigator.pushNamed(context, '/register');
-        debugPrint('Sign in with Email');
       },
       child: Container(
         width: Constants.deviceMaxWidth(context),
