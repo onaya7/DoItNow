@@ -3,6 +3,7 @@ import 'package:doitnow/services/firebase_auth.dart';
 import 'package:doitnow/utils/colors/color_constant.dart';
 import 'package:doitnow/utils/components/already_have.dart';
 import 'package:doitnow/utils/components/custom_button.dart';
+import 'package:doitnow/utils/components/custom_snackbar.dart';
 import 'package:doitnow/utils/components/text_input_field.dart';
 import 'package:doitnow/utils/constants/constant.dart';
 import 'package:doitnow/utils/validators/validators.dart';
@@ -60,18 +61,10 @@ class RegisterPageState extends State<RegisterPage> {
       });
       if (user != null) {
         debugPrint('User registered');
-        if (mounted) {
-          Navigator.pushReplacementNamed(context, '/home');
-        }
+        mounted ? Navigator.pushReplacementNamed(context, '/home') : null;
       } else {
         debugPrint('Error registering user ');
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('User not registered'),
-            ),
-          );
-        }
+        mounted ? CustomSnackBar.show(context, 'Error registering user') : null;
       }
     }
   }

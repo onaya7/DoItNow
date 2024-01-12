@@ -1,8 +1,11 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:doitnow/models/user_model.dart';
+import 'package:doitnow/services/connectivity.dart';
 import 'package:doitnow/services/firebase_auth.dart';
 import 'package:doitnow/utils/colors/color_constant.dart';
 import 'package:doitnow/utils/components/already_have.dart';
 import 'package:doitnow/utils/components/custom_button.dart';
+import 'package:doitnow/utils/components/custom_snackbar.dart';
 import 'package:doitnow/utils/components/google_auth_button.dart';
 import 'package:doitnow/utils/components/text_input_field.dart';
 import 'package:doitnow/utils/constants/constant.dart';
@@ -22,6 +25,8 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final FirebaseAuthService _auth = FirebaseAuthService();
+  final _connectivityService = ConnectivityService();
+
   bool _isLoading = false;
 
   late FocusNode _emailFocusNode;
@@ -49,31 +54,30 @@ class _LoginPageState extends State<LoginPage> {
       setState(() {
         _isLoading = !_isLoading;
       });
-      UserData? user = await _auth.signInWithEmailAndPassword(
-          _emailController.text, _passwordController.text);
-      setState(() {
-        _isLoading = !_isLoading;
-      });
-      if (user != null) {
-        debugPrint('User logged in');
+
+      // check for internet connection
+      var connectivityResult = await _connectivityService.connectivityResult;
+      if (connectivityResult == ConnectivityResult.none) {
         if (mounted) {
-          Navigator.pushReplacementNamed(context, '/home');
+          CustomSnackBar.show(context, 'No internet connection');
+          setState(() {
+            _isLoading = !_isLoading;
+          });
         }
       } else {
-        debugPrint('Error logging user in');
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: const Text('User not logged in Invalid Credentials!!!',
-                  style: TextStyle(color: Colors.white)),
-              backgroundColor: ColorConstants.deepBlueColor,
-              duration: const Duration(seconds: 3),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16.0),
-              ),
-              behavior: SnackBarBehavior.floating,
-            ),
-          );
+        UserData? user = await _auth.signInWithEmailAndPassword(
+            _emailController.text, _passwordController.text);
+        setState(() {
+          _isLoading = !_isLoading;
+        });
+        if (user != null) {
+          debugPrint('User logged in');
+          mounted ? Navigator.pushReplacementNamed(context, '/home') : null;
+        } else {
+          debugPrint('Error logging user in');
+          mounted
+              ? CustomSnackBar.show(context, 'Invalid Credentials!!!')
+              : null;
         }
       }
     }
