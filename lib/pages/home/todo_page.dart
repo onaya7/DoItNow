@@ -1,6 +1,8 @@
 import 'package:doitnow/models/user_model.dart';
 import 'package:doitnow/services/firebase_auth.dart';
+import 'package:doitnow/utils/colors/color_constant.dart';
 import 'package:doitnow/utils/components/custom_loader.dart';
+import 'package:doitnow/utils/components/custom_tabbutton.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -19,14 +21,14 @@ class _TodoPageState extends State<TodoPage> {
     setState(() {
       _isLoading = !_isLoading;
     });
-    // await _auth.signOut();
-    // setState(() {
-    //   _isLoading = !_isLoading;
-    // });
-    // mounted ? Navigator.pushReplacementNamed(context, '/welcome') : null;
+    await _auth.signOut();
+    setState(() {
+      _isLoading = !_isLoading;
+    });
+    mounted ? Navigator.pushReplacementNamed(context, '/welcome') : null;
   }
 
-    void _unfocusLoader() {
+  void _unfocusLoader() {
     Navigator.pushReplacementNamed(context, '/todo');
   }
 
@@ -36,19 +38,71 @@ class _TodoPageState extends State<TodoPage> {
     return Stack(
       children: <Widget>[
         Scaffold(
-            appBar: AppBar(
-              automaticallyImplyLeading: false,
-              title: const Text('Home Page'),
-              actions: [
-                IconButton(
-                    icon: const Icon(Icons.logout), onPressed: _logoutUser),
-              ],
+          appBar: AppBar(
+            backgroundColor: ColorConstants.deepBlueColor,
+            automaticallyImplyLeading: false,
+            title: Text(' TODO APP',
+                style: TextStyle(
+                    color: ColorConstants.plainWhiteColor,
+                    fontSize: 24,
+                    fontWeight: FontWeight.w600)),
+            actions: [
+              IconButton(
+                  icon: Icon(
+                    Icons.logout,
+                    color: ColorConstants.plainWhiteColor,
+                  ),
+                  onPressed: _logoutUser),
+            ],
+          ),
+          body: Container(
+            color: ColorConstants.plainGreyColor,
+            child: Center(
+              child: Text('Welcome ${user?.email}'),
             ),
-            body: Container(
-              child: Center(
-                child: Text('Welcome ${user?.email}'),
+          ),
+          floatingActionButton: SizedBox(
+            height: 70,
+            width: 70,
+            child: FloatingActionButton(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(70.0)),
+              onPressed: () => Navigator.pushNamed(context, '/addtodo'),
+              backgroundColor: ColorConstants.deepBlueColor,
+              child: Icon(
+                Icons.add,
+                color: ColorConstants.plainWhiteColor,
               ),
-            )),
+            ),
+          ),
+          bottomNavigationBar: BottomAppBar(
+            padding: const EdgeInsets.all(0.0),
+            color: ColorConstants.plainWhiteColor,
+            child: SizedBox(
+              height: 68.0,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    CustomTabButton(
+                        name: 'All',
+                        onTap: () =>
+                            Navigator.pushReplacementNamed(context, '/todo'),
+                        imagepath: 'assets/images/playlist.svg',
+                        color: ColorConstants.deepBlueColor),
+                    CustomTabButton(
+                        name: 'Completed',
+                        onTap: () => Navigator.pushReplacementNamed(
+                            context, '/completedtodo'),
+                        imagepath: 'assets/images/tick.svg',
+                        color: ColorConstants.deepGreyColor),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
         if (_isLoading) CustomLoader(unfocus: _unfocusLoader),
       ],
     );
