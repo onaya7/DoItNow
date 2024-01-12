@@ -5,6 +5,7 @@ import 'package:doitnow/services/firebase_auth.dart';
 import 'package:doitnow/utils/colors/color_constant.dart';
 import 'package:doitnow/utils/components/already_have.dart';
 import 'package:doitnow/utils/components/custom_button.dart';
+import 'package:doitnow/utils/components/custom_loader.dart';
 import 'package:doitnow/utils/components/custom_snackbar.dart';
 import 'package:doitnow/utils/components/google_auth_button.dart';
 import 'package:doitnow/utils/components/text_input_field.dart';
@@ -48,7 +49,7 @@ class _LoginPageState extends State<LoginPage> {
     _passwordFocusNode.dispose();
   }
 
-  void _loginUser() async {
+  Future<void> _loginUser() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
       setState(() {
@@ -72,7 +73,7 @@ class _LoginPageState extends State<LoginPage> {
         });
         if (user != null) {
           debugPrint('User logged in');
-          mounted ? Navigator.pushReplacementNamed(context, '/home') : null;
+          mounted ? Navigator.pushReplacementNamed(context, '/todo') : null;
         } else {
           debugPrint('Error logging user in');
           mounted
@@ -82,6 +83,11 @@ class _LoginPageState extends State<LoginPage> {
       }
     }
   }
+
+    void _unfocusLoader() {
+    Navigator.pushReplacementNamed(context, '/login');
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -235,16 +241,7 @@ class _LoginPageState extends State<LoginPage> {
           ),
         ),
       )),
-      if (_isLoading)
-        Container(
-          color: Colors.black
-              .withOpacity(0.5), // Optional: adds a slight dark overlay
-          child: Center(
-            child: CircularProgressIndicator(
-              color: ColorConstants.deepBlueColor,
-            ),
-          ),
-        ),
+      if (_isLoading) CustomLoader(unfocus: _unfocusLoader),
     ]);
   }
 }

@@ -50,9 +50,13 @@ class MyApp extends StatelessWidget {
                           'No internet connection',
                         );
                       });
+                    } else {
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        CustomSnackBar.show(
+                            context, 'Internet connection restored');
+                      });
                     }
-                    return const SizedBox
-                        .shrink(); // Return an empty widget if there's an internet connection
+                    return const SizedBox();
                   }),
             ),
           )),

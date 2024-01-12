@@ -3,6 +3,7 @@ import 'package:doitnow/services/firebase_auth.dart';
 import 'package:doitnow/utils/colors/color_constant.dart';
 import 'package:doitnow/utils/components/already_have.dart';
 import 'package:doitnow/utils/components/custom_button.dart';
+import 'package:doitnow/utils/components/custom_loader.dart';
 import 'package:doitnow/utils/components/custom_snackbar.dart';
 import 'package:doitnow/utils/components/text_input_field.dart';
 import 'package:doitnow/utils/constants/constant.dart';
@@ -48,7 +49,7 @@ class RegisterPageState extends State<RegisterPage> {
     super.dispose();
   }
 
-  _registerUser() async {
+  Future<void> _registerUser() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
       setState(() {
@@ -61,12 +62,16 @@ class RegisterPageState extends State<RegisterPage> {
       });
       if (user != null) {
         debugPrint('User registered');
-        mounted ? Navigator.pushReplacementNamed(context, '/home') : null;
+        mounted ? Navigator.pushReplacementNamed(context, '/login') : null;
       } else {
         debugPrint('Error registering user ');
         mounted ? CustomSnackBar.show(context, 'Error registering user') : null;
       }
     }
+  }
+
+  void _unfocusLoader() {
+    Navigator.pushReplacementNamed(context, '/register');
   }
 
   @override
@@ -246,16 +251,7 @@ class RegisterPageState extends State<RegisterPage> {
             ),
           ),
         )),
-        if (_isLoading)
-          Container(
-            color: Colors.black
-                .withOpacity(0.5), // Optional: adds a slight dark overlay
-            child: Center(
-              child: CircularProgressIndicator(
-                color: ColorConstants.deepBlueColor,
-              ),
-            ),
-          ),
+        if (_isLoading) CustomLoader(unfocus: _unfocusLoader),
       ],
     );
   }

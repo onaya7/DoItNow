@@ -1,5 +1,5 @@
 import 'package:doitnow/models/user_model.dart';
-import 'package:doitnow/pages/home/home_page.dart';
+import 'package:doitnow/pages/home/todo_page.dart';
 import 'package:doitnow/pages/onboarding/welcome_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -16,7 +16,7 @@ class AuthWrapper extends StatelessWidget {
       return const WelcomePage();
     } else {
       debugPrint('Logged in as ${user.email}');
-      return HomePage();
+      return const TodoPage();
     }
   }
 }
