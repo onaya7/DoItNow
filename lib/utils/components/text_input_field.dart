@@ -1,4 +1,5 @@
 import 'package:doitnow/utils/colors/color_constant.dart';
+import 'package:doitnow/utils/controllers/shiftfocus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -25,22 +26,13 @@ class TextInputField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    void shiftFocus(FocusNode? currentFocus, FocusNode? nextFocus) {
-      if (nextFocus != null) {
-        currentFocus?.unfocus();
-        FocusScope.of(context).requestFocus(nextFocus);
-      } else {
-        currentFocus?.unfocus();
-      }
-    }
-
     return TextFormField(
       obscureText: obscureText,
       controller: controller,
       textInputAction: action,
       focusNode: currentFocus,
       onEditingComplete: () {
-        shiftFocus(currentFocus, nextFocus);
+        Controller.shiftFocus(context, currentFocus, nextFocus);
       },
       decoration: InputDecoration(
         focusedErrorBorder: OutlineInputBorder(
