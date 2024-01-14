@@ -1,4 +1,5 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:doitnow/data/todo_item.dart';
 import 'package:doitnow/models/user_model.dart';
 import 'package:doitnow/services/connectivity.dart';
 import 'package:doitnow/services/firebase_auth.dart';
@@ -6,6 +7,7 @@ import 'package:doitnow/utils/components/custom_snackbar.dart';
 import 'package:doitnow/utils/routes/routes.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:provider/provider.dart';
 
 import 'firebase_options.dart';
@@ -15,6 +17,8 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  await Hive.initFlutter();
+  Hive.registerAdapter(TodoItemAdapter());
   runApp(MyApp());
 }
 
