@@ -2,20 +2,45 @@ import 'package:doitnow/data/todo_item.dart';
 import 'package:hive/hive.dart';
 
 class HiveService {
-  static const String _boxName = "TodoItemBox";
+  static const String boxName = "TodoItemBox";
+  static final todoBox = Hive.box<TodoItem>(HiveService.boxName);
+  static Future<Box<TodoItem>> openTodoBox = Hive.openBox<TodoItem>(boxName);
 
-  Future<void> saveData(String key, String value) async {
-    Box box = await Hive.openBox<TodoItem>(_boxName);
-    await box.put(key, value);
+
+  static Future<void> addTodoData(TodoItem todoItem) async {
+    Box<TodoItem> box = await openTodoBox;
+    await box.add(todoItem);
   }
 
-  Future<String> getData(String key) async {
-    var box = await Hive.openBox(_boxName);
-    return box.get(key);
+  static Future<void> updateTodoData(int index, TodoItem todoItem) async {
+    Box<TodoItem> box = await openTodoBox;
+    await box.putAt(index, todoItem);
   }
 
-  Future<void> deleteData(String key) async {
-    var box = await Hive.openBox(_boxName);
-    await box.delete(key);
+ static Future<void> updateIsCompleted(int index, bool isCompleted ) async {
+    Box<TodoItem> box = await openTodoBox;
+    TodoItem todoItem = box.getAt(index)!;
+    todoItem.isCompleted = isCompleted;
+    await box.putAt(index, todoItem);
+  }
+
+  static Future<List<TodoItem>> getTodoData() async {
+    Box<TodoItem> box = await openTodoBox;
+    return box.values.toList();
+  }
+
+  static Future<void> deleteTodoData(int index) async {
+    Box<TodoItem> box = await openTodoBox;
+    await box.deleteAt(index);
+  }
+
+  static Future<void> deleteAllTodoData() async {
+    Box<TodoItem> box = await openTodoBox;
+    await box.clear();
+  }
+
+  static Future<void> closeBox() async {
+    Box<TodoItem> box = await openTodoBox;
+    await box.close();
   }
 }

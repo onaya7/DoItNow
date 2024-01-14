@@ -1,7 +1,10 @@
+import 'package:doitnow/data/todo_item.dart';
+import 'package:doitnow/services/hiveservice.dart';
 import 'package:doitnow/utils/colors/color_constant.dart';
 import 'package:doitnow/utils/components/custom_button.dart';
 import 'package:doitnow/utils/components/textform_widget.dart';
 import 'package:doitnow/utils/constants/constant.dart';
+import 'package:doitnow/utils/validators/validators.dart';
 import 'package:flutter/material.dart';
 
 class EditTodoPage extends StatefulWidget {
@@ -15,6 +18,8 @@ class _EditTodoPageState extends State<EditTodoPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _detailController = TextEditingController();
+
+  bool _isLoading = false;
 
   late FocusNode _titleFocusNode;
   late FocusNode _detailFocusNode;
@@ -35,12 +40,34 @@ class _EditTodoPageState extends State<EditTodoPage> {
     super.dispose();
   }
 
-  void _updatetodo() {}
+  _updatetodo(int index) async {
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+      setState(() {
+        _isLoading = !_isLoading;
+      });
+      await HiveService.updateTodoData(
+          index,
+          TodoItem(
+              title: _titleController.text,
+              description: _detailController.text));
+      setState(() {
+        _isLoading = !_isLoading;
+      });
 
-  void _canceltodo() {}
+      mounted ? Navigator.pushReplacementNamed(context, '/todo') : null;
+    }
+  }
+
+  void _canceltodo() {
+    Navigator.pushReplacementNamed(context, '/todo');
+  }
 
   @override
   Widget build(BuildContext context) {
+    // final TodoItem data =
+    //     ModalRoute.of(context)!.settings.arguments as TodoItem;
+    // _titleController.text = data.title;
     return Stack(
       children: <Widget>[
         Scaffold(
@@ -74,17 +101,23 @@ class _EditTodoPageState extends State<EditTodoPage> {
                         child: Column(
                           children: <Widget>[
                             TextFormWidget(
-                                hintText: 'Title',
-                                controller: _titleController,
-                                currentFocus: _titleFocusNode,
-                                nextFocus: _detailFocusNode,
-                                action: TextInputAction.next),
+                              hintText: 'Title',
+                              controller: _titleController,
+                              currentFocus: _titleFocusNode,
+                              nextFocus: _detailFocusNode,
+                              action: TextInputAction.next,
+                              validator: (value) =>
+                                  TodoValidator.validateTitle(value),
+                            ),
                             const SizedBox(height: 43),
                             TextFormWidget(
-                                hintText: 'Detail',
-                                controller: _detailController,
-                                currentFocus: _detailFocusNode,
-                                action: TextInputAction.done),
+                              hintText: 'Detail',
+                              controller: _detailController,
+                              currentFocus: _detailFocusNode,
+                              action: TextInputAction.done,
+                              validator: (value) =>
+                                  TodoValidator.validateDescription(value),
+                            ),
                           ],
                         ),
                       ),
@@ -98,7 +131,7 @@ class _EditTodoPageState extends State<EditTodoPage> {
                           SizedBox(
                             width: 170,
                             child: CustomButton(
-                                buttonName: 'Update', onTap: _updatetodo),
+                                buttonName: 'Update', onTap: _updatetodo(1)),
                           ),
                           SizedBox(
                             width: 170,

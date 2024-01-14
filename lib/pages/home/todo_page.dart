@@ -1,11 +1,14 @@
+import 'package:doitnow/data/todo_item.dart';
 import 'package:doitnow/models/user_model.dart';
 import 'package:doitnow/services/firebase_auth.dart';
+import 'package:doitnow/services/hiveservice.dart';
 import 'package:doitnow/utils/colors/color_constant.dart';
 import 'package:doitnow/utils/components/custom_loader.dart';
 import 'package:doitnow/utils/components/custom_tabbutton.dart';
 import 'package:doitnow/utils/components/todo_tile.dart';
 import 'package:doitnow/utils/constants/constant.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:provider/provider.dart';
 
 class TodoPage extends StatefulWidget {
@@ -17,7 +20,16 @@ class TodoPage extends StatefulWidget {
 
 class _TodoPageState extends State<TodoPage> {
   final _auth = FirebaseAuthService();
+  late Box<TodoItem> _todoBox;
+
   bool _isLoading = false;
+  bool done = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _todoBox = HiveService.todoBox;
+  }
 
   void _logoutUser() async {
     setState(() {
@@ -32,6 +44,36 @@ class _TodoPageState extends State<TodoPage> {
 
   void _unfocusLoader() {
     Navigator.pushReplacementNamed(context, '/todo');
+  }
+
+  _isCompleted(int index, TodoItem todo) async {
+    setState(() {
+      _isLoading = !_isLoading;
+    });
+    todo.isCompleted = !todo.isCompleted;
+
+    await HiveService.updateIsCompleted(index, todo.isCompleted);
+    debugPrint('completed item at position $index');
+    debugPrint('completed item at position ${todo.isCompleted}');
+    setState(() {
+      _isLoading = !_isLoading;
+    });
+  }
+
+  _editTodo() {
+    //   Navigator.pushNamed(context, '/edittodo', arguments: {index, value});
+  }
+
+  _deleteTodo(int index) async {
+    setState(() {
+      _isLoading = !_isLoading;
+    });
+    await HiveService.deleteTodoData(index);
+    debugPrint('Deleted item at position $index');
+
+    setState(() {
+      _isLoading = !_isLoading;
+    });
   }
 
   @override
@@ -61,10 +103,28 @@ class _TodoPageState extends State<TodoPage> {
               width: Constants.deviceMaxWidth(context),
               padding: const EdgeInsets.only(top: 22, left: 7, right: 7),
               color: ColorConstants.plainGreyColor,
-              child: const Column(
-                children: <Widget>[
-                  TodoTile()
-                ],
+              child: ValueListenableBuilder(
+                valueListenable: _todoBox.listenable(),
+                builder: (context, Box<TodoItem> todos, child) =>
+                    ListView.builder(
+                        itemCount: todos.length,
+                        itemBuilder: (context, index) {
+                          var todo = todos.getAt(index);
+                          return TodoTile(
+                            title: todo!.title,
+                            description: todo.description,
+                            todoStatus: todo.isCompleted,
+                            isCompleted: () {
+                              _isCompleted(index, todo);
+                            },
+                            editTodo: () {
+                              _editTodo();
+                            },
+                            deleteTodo: () {
+                              _deleteTodo(index);
+                            },
+                          );
+                        }),
               )),
           floatingActionButton: SizedBox(
             height: 70,

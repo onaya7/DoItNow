@@ -1,7 +1,11 @@
+import 'package:doitnow/data/todo_item.dart';
+import 'package:doitnow/services/hiveservice.dart';
 import 'package:doitnow/utils/colors/color_constant.dart';
 import 'package:doitnow/utils/components/custom_button.dart';
+import 'package:doitnow/utils/components/custom_loader.dart';
 import 'package:doitnow/utils/components/textform_widget.dart';
 import 'package:doitnow/utils/constants/constant.dart';
+import 'package:doitnow/utils/validators/validators.dart';
 import 'package:flutter/material.dart';
 
 class AddTodoPage extends StatefulWidget {
@@ -15,6 +19,7 @@ class _AddTodoPageState extends State<AddTodoPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _detailController = TextEditingController();
+  bool _isLoading = false;
 
   late FocusNode _titleFocusNode;
   late FocusNode _detailFocusNode;
@@ -35,7 +40,26 @@ class _AddTodoPageState extends State<AddTodoPage> {
     super.dispose();
   }
 
-  void _addTodo() {}
+  void _addTodo() async {
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+      setState(() {
+        _isLoading = !_isLoading;
+      });
+      await HiveService.addTodoData(TodoItem(
+          title: _titleController.text, description: _detailController.text));
+      setState(() {
+        _isLoading = !_isLoading;
+      });
+
+      mounted ? Navigator.pushReplacementNamed(context, '/todo') : null;
+    }
+  }
+
+  void _unfocusLoader() {
+    Navigator.pushNamed(context, '/addtodo');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -75,13 +99,18 @@ class _AddTodoPageState extends State<AddTodoPage> {
                               controller: _titleController,
                               currentFocus: _titleFocusNode,
                               nextFocus: _detailFocusNode,
-                              action: TextInputAction.next),
+                              action: TextInputAction.next,
+                              validator: (value) =>
+                                  TodoValidator.validateTitle(value)),
                           const SizedBox(height: 43),
                           TextFormWidget(
-                              hintText: 'Detail',
-                              controller: _detailController,
-                              currentFocus: _detailFocusNode,
-                              action: TextInputAction.done),
+                            hintText: 'Detail',
+                            controller: _detailController,
+                            currentFocus: _detailFocusNode,
+                            action: TextInputAction.done,
+                            validator: (value) =>
+                                TodoValidator.validateDescription(value),
+                          ),
                         ],
                       ),
                     ),
@@ -94,6 +123,7 @@ class _AddTodoPageState extends State<AddTodoPage> {
                 ],
               )),
         ),
+        if (_isLoading) CustomLoader(unfocus: _unfocusLoader),
       ],
     );
   }

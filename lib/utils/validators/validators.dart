@@ -42,6 +42,7 @@ class RegisterValidators {
   }
 }
 
+
 class LoginValidators {
   static String? validateEmail(String? value) {
     if (value == null || value.isEmpty) {
@@ -58,6 +59,22 @@ class LoginValidators {
       return '*Password must be at least 6 characters long';
     }
 
+    return null;
+  }
+}
+
+class TodoValidator{
+  static String? validateTitle(String? value) {
+    if (value == null || value.isEmpty) {
+      return '*Please enter a title';
+    }
+    return null;
+  }
+
+  static String? validateDescription(String? value) {
+    if (value == null || value.isEmpty) {
+      return '*Please enter a description';
+    }
     return null;
   }
 }

@@ -3,6 +3,7 @@ import 'package:doitnow/data/todo_item.dart';
 import 'package:doitnow/models/user_model.dart';
 import 'package:doitnow/services/connectivity.dart';
 import 'package:doitnow/services/firebase_auth.dart';
+import 'package:doitnow/services/hiveservice.dart';
 import 'package:doitnow/utils/components/custom_snackbar.dart';
 import 'package:doitnow/utils/routes/routes.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -19,6 +20,7 @@ void main() async {
   );
   await Hive.initFlutter();
   Hive.registerAdapter(TodoItemAdapter());
+  await HiveService.openTodoBox;
   runApp(MyApp());
 }
 

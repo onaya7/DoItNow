@@ -14,6 +14,6 @@ class TodoItem {
   TodoItem({
     required this.title,
     required this.description,
-    required this.isCompleted,
+    this.isCompleted = false,
   });
 }

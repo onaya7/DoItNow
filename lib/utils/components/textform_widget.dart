@@ -8,6 +8,8 @@ class TextFormWidget extends StatelessWidget {
   final FocusNode currentFocus;
   final FocusNode? nextFocus;
   final TextInputAction action;
+  final String? Function(String?)? validator;
+
 
   const TextFormWidget({
     required this.hintText,
@@ -15,12 +17,14 @@ class TextFormWidget extends StatelessWidget {
     required this.currentFocus,
     this.nextFocus,
     required this.action,
+    required this.validator,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+
       controller: controller,
       focusNode: currentFocus,
       onEditingComplete: () {
@@ -43,6 +47,7 @@ class TextFormWidget extends StatelessWidget {
               BorderSide(width: 1.0, color: ColorConstants.deepBlueColor),
         ),
       ),
+      validator: validator,
     );
   }
 }
