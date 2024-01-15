@@ -8,11 +8,15 @@ import 'package:doitnow/utils/validators/validators.dart';
 import 'package:flutter/material.dart';
 
 class EditTodoPage extends StatefulWidget {
+  final String id;
   final String title;
   final String description;
 
   const EditTodoPage(
-      {required this.title, required this.description, super.key});
+      {required this.id,
+      required this.title,
+      required this.description,
+      super.key});
 
   @override
   State<EditTodoPage> createState() => _EditTodoPageState();
@@ -46,17 +50,16 @@ class _EditTodoPageState extends State<EditTodoPage> {
     super.dispose();
   }
 
-  _updatetodo(int index) async {
+  _updatetodo() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
       setState(() {
         _isLoading = !_isLoading;
       });
-      await HiveService.updateTodoData(
-          index,
-          TodoItem(
-              title: _titleController.text,
-              description: _detailController.text));
+      await HiveService.updateTodoData(TodoItem(
+          id: widget.id,
+          title: _titleController.text,
+          description: _detailController.text));
       setState(() {
         _isLoading = !_isLoading;
       });
@@ -135,7 +138,7 @@ class _EditTodoPageState extends State<EditTodoPage> {
                             width: 170,
                             child: CustomButton(
                                 buttonName: 'Update',
-                                onTap: () => _updatetodo(1)),
+                                onTap: () => _updatetodo()),
                           ),
                           SizedBox(
                             width: 170,

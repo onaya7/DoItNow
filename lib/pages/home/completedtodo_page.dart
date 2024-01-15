@@ -1,9 +1,49 @@
+import 'package:doitnow/data/todo_item.dart';
+import 'package:doitnow/services/hiveservice.dart';
 import 'package:doitnow/utils/colors/color_constant.dart';
+import 'package:doitnow/utils/components/custom_loader.dart';
 import 'package:doitnow/utils/components/custom_tabbutton.dart';
+import 'package:doitnow/utils/components/todo_tile.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
-class CompletedTodoPage extends StatelessWidget {
+class CompletedTodoPage extends StatefulWidget {
   const CompletedTodoPage({super.key});
+
+  @override
+  State<CompletedTodoPage> createState() => _CompletedTodoPageState();
+}
+
+class _CompletedTodoPageState extends State<CompletedTodoPage> {
+  late Box<TodoItem> _todoBox;
+  bool _isLoading = false;
+
+  @override
+  void initState() {
+    _todoBox = HiveService.todoBox;
+    super.initState();
+  }
+
+  _isCompleted(TodoItem todo) async {
+    setState(() {
+      _isLoading = !_isLoading;
+    });
+
+    todo.isCompleted = !todo.isCompleted;
+
+    await HiveService.updateIsCompleted(todo.id, todo.isCompleted);
+
+    setState(() {
+      _isLoading = !_isLoading;
+    });
+
+    debugPrint('completed item at position ${todo.id}');
+    debugPrint('completed item at position ${todo.isCompleted}');
+  }
+
+  void _unfocusLoader() {
+    Navigator.pushReplacementNamed(context, '/completedtodo');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +59,8 @@ class CompletedTodoPage extends StatelessWidget {
                   Icons.arrow_back_ios,
                   color: ColorConstants.plainWhiteColor,
                 ),
-                onPressed: () => Navigator.pushReplacementNamed(context, '/todo'),
+                onPressed: () =>
+                    Navigator.pushReplacementNamed(context, '/todo'),
               ),
             ),
             title: Text(' Completed Todo',
@@ -29,11 +70,25 @@ class CompletedTodoPage extends StatelessWidget {
                     fontWeight: FontWeight.w600)),
           ),
           body: Container(
-            color: ColorConstants.plainGreyColor,
-            child: Center(
-              child: Text('Completed Todo Page ${DateTime.now()}'),
-            ),
-          ),
+              color: ColorConstants.plainGreyColor,
+              child: ValueListenableBuilder(
+                  valueListenable: _todoBox.listenable(),
+                  builder: (context, Box<TodoItem> todos, child) {
+                    var completedTodos =
+                        todos.values.where((todo) => todo.isCompleted).toList();
+                    return ListView.builder(
+                        itemCount: completedTodos.length,
+                        itemBuilder: (context, index) {
+                          var todo = completedTodos[index];
+                          debugPrint('$todo');
+                          return TodoTile(
+                            title: todo.title,
+                            description: todo.description,
+                            todoStatus: todo.isCompleted,
+                            isCompleted: () => _isCompleted(todo),
+                          );
+                        });
+                  })),
           bottomNavigationBar: BottomAppBar(
             padding: const EdgeInsets.all(0.0),
             color: ColorConstants.plainWhiteColor,
@@ -62,6 +117,7 @@ class CompletedTodoPage extends StatelessWidget {
             ),
           ),
         ),
+        if (_isLoading) CustomLoader(unfocus: _unfocusLoader),
       ],
     );
   }

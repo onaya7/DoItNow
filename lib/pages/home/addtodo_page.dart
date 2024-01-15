@@ -7,6 +7,7 @@ import 'package:doitnow/utils/components/textform_widget.dart';
 import 'package:doitnow/utils/constants/constant.dart';
 import 'package:doitnow/utils/validators/validators.dart';
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 
 class AddTodoPage extends StatefulWidget {
   const AddTodoPage({super.key});
@@ -47,7 +48,9 @@ class _AddTodoPageState extends State<AddTodoPage> {
         _isLoading = !_isLoading;
       });
       await HiveService.addTodoData(TodoItem(
-          title: _titleController.text, description: _detailController.text));
+          id: const Uuid().v4(),
+          title: _titleController.text,
+          description: _detailController.text));
       setState(() {
         _isLoading = !_isLoading;
       });

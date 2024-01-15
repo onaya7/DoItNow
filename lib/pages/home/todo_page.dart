@@ -3,7 +3,6 @@ import 'package:doitnow/pages/home/edittodo_page.dart';
 import 'package:doitnow/services/firebase_auth.dart';
 import 'package:doitnow/services/hiveservice.dart';
 import 'package:doitnow/utils/colors/color_constant.dart';
-import 'package:doitnow/utils/components/custom_loader.dart';
 import 'package:doitnow/utils/components/custom_tabbutton.dart';
 import 'package:doitnow/utils/components/todo_tile.dart';
 import 'package:doitnow/utils/constants/constant.dart';
@@ -22,7 +21,6 @@ class _TodoPageState extends State<TodoPage> {
   late Box<TodoItem> _todoBox;
 
   bool _isLoading = false;
-  bool done = false;
 
   @override
   void initState() {
@@ -45,36 +43,39 @@ class _TodoPageState extends State<TodoPage> {
     Navigator.pushReplacementNamed(context, '/todo');
   }
 
-  _isCompleted(int index, TodoItem todo) async {
+  _isCompleted(TodoItem todo) async {
     setState(() {
       _isLoading = !_isLoading;
     });
     todo.isCompleted = !todo.isCompleted;
 
-    await HiveService.updateIsCompleted(index, todo.isCompleted);
-    debugPrint('completed item at position $index');
-    debugPrint('completed item at position ${todo.isCompleted}');
+    await HiveService.updateIsCompleted(todo.id, todo.isCompleted);
+
     setState(() {
       _isLoading = !_isLoading;
     });
+
+    debugPrint('completed item at position ${todo.id}');
+    debugPrint('completed item at position ${todo.isCompleted}');
   }
 
-  _editTodo(String title, String description) {
+  _editTodo(String id, String title, String description) {
     Navigator.push(
         context,
         MaterialPageRoute(
             builder: (context) => EditTodoPage(
+                  id: id,
                   title: title,
                   description: description,
                 )));
   }
 
-  _deleteTodo(int index) async {
+  _deleteTodo(TodoItem todo) async {
     setState(() {
       _isLoading = !_isLoading;
     });
-    await HiveService.deleteTodoData(index);
-    debugPrint('Deleted item at position $index');
+    await HiveService.deleteTodoData(todo.id);
+    debugPrint('Deleted item at position ${todo.id}');
 
     setState(() {
       _isLoading = !_isLoading;
@@ -105,26 +106,31 @@ class _TodoPageState extends State<TodoPage> {
             ],
           ),
           body: Container(
-              width: Constants.deviceMaxWidth(context),
-              padding: const EdgeInsets.only(top: 22, left: 7, right: 7),
-              color: ColorConstants.plainGreyColor,
-              child: ValueListenableBuilder(
+            width: Constants.deviceMaxWidth(context),
+            padding: const EdgeInsets.only(top: 22, left: 7, right: 7),
+            color: ColorConstants.plainGreyColor,
+            child: ValueListenableBuilder(
                 valueListenable: _todoBox.listenable(),
-                builder: (context, Box<TodoItem> todos, child) =>
-                    ListView.builder(
-                        itemCount: todos.length,
-                        itemBuilder: (context, index) {
-                          var todo = todos.getAt(index);
-                          return TodoTile(
-                              title: todo!.title,
-                              description: todo.description,
-                              todoStatus: todo.isCompleted,
-                              isCompleted: () => _isCompleted(index, todo),
-                              editTodo: () =>
-                                  _editTodo(todo.title, todo.description),
-                              deleteTodo: () => _deleteTodo(index));
-                        }),
-              )),
+                builder: (context, Box<TodoItem> todos, child) {
+                  var uncompletedTodos =
+                      todos.values.where((todo) => !todo.isCompleted).toList();
+                  return ListView.builder(
+                      itemCount: uncompletedTodos.length,
+                      itemBuilder: (context, index) {
+                        var todo = uncompletedTodos[index];
+                        debugPrint('$todo');
+                        return TodoTile(
+                          title: todo.title,
+                          description: todo.description,
+                          todoStatus: todo.isCompleted,
+                          isCompleted: () => _isCompleted(todo),
+                          editTodo: () =>
+                              _editTodo(todo.id, todo.title, todo.description),
+                          deleteTodo: () => _deleteTodo(todo),
+                        );
+                      });
+                }),
+          ),
           floatingActionButton: SizedBox(
             height: 70,
             width: 70,
@@ -167,17 +173,8 @@ class _TodoPageState extends State<TodoPage> {
             ),
           ),
         ),
-        if (_isLoading) CustomLoader(unfocus: _unfocusLoader),
+        // if (_isLoading) CustomLoader(unfocus: _unfocusLoader),
       ],
     );
   }
-}
-
-class TodoData {
-  final String title;
-  final String description;
-  final int index;
-
-  TodoData(
-      {required this.title, required this.description, required this.index});
 }

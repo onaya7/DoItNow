@@ -39,6 +39,7 @@ dependencies:
   connectivity_plus: ^5.0.2
   hive: any
   hive_flutter: any
+  uuid: ^4.3.2
   
 
 

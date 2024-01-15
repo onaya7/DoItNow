@@ -15,9 +15,9 @@ class TodoTile extends StatelessWidget {
     required this.title,
     required this.description,
     required this.todoStatus,
-    required this.isCompleted,
-    required this.editTodo,
-    required this.deleteTodo,
+    this.isCompleted,
+    this.editTodo,
+    this.deleteTodo,
     super.key,
   });
 
@@ -68,7 +68,10 @@ class TodoTile extends StatelessWidget {
                       child: SvgPicture.asset(
                         'assets/images/pencil.svg',
                         colorFilter: ColorFilter.mode(
-                            ColorConstants.iconColor, BlendMode.srcATop),
+                            todoStatus
+                                ? ColorConstants.iconColor
+                                : ColorConstants.deepBlueColor,
+                            BlendMode.srcATop),
                       ),
                     ),
                   ),
@@ -82,7 +85,10 @@ class TodoTile extends StatelessWidget {
                       child: SvgPicture.asset(
                         'assets/images/trash.svg',
                         colorFilter: ColorFilter.mode(
-                            ColorConstants.iconColor, BlendMode.srcATop),
+                            todoStatus
+                                ? ColorConstants.iconColor
+                                : ColorConstants.deepBlueColor,
+                            BlendMode.srcATop),
                       ),
                     ),
                   ),
@@ -95,9 +101,11 @@ class TodoTile extends StatelessWidget {
                       alignment: Alignment.center,
                       child: SvgPicture.asset(
                         'assets/images/checkcircle.svg',
-                        colorFilter: todoStatus ? ColorFilter.mode(
-                            ColorConstants.deepBlueColor, BlendMode.srcATop) : ColorFilter.mode(
-                            ColorConstants.iconColor, BlendMode.srcATop),
+                        colorFilter: todoStatus
+                            ? ColorFilter.mode(
+                                ColorConstants.deepBlueColor, BlendMode.srcATop)
+                            : ColorFilter.mode(
+                                ColorConstants.iconColor, BlendMode.srcATop),
                       ),
                     ),
                   )
