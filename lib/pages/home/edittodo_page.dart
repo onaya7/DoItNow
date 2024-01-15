@@ -143,7 +143,7 @@ class _EditTodoPageState extends State<EditTodoPage> {
                           SizedBox(
                             width: 170,
                             child: CustomButton(
-                                buttonName: 'Cancel', onTap: () => _canceltodo),
+                                buttonName: 'Cancel', onTap: () => _canceltodo()),
                           ),
                         ],
                       ),

@@ -38,8 +38,9 @@ class MyApp extends StatelessWidget {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: ColorConstants.deepBlueColor, // Set status bar color
       statusBarIconBrightness: Brightness.light, // Set status bar icon color
-        systemNavigationBarColor: ColorConstants.plainWhiteColor, // Set navigation bar color
-  systemNavigationBarIconBrightness: Brightness.light, 
+      systemNavigationBarColor:
+          ColorConstants.plainWhiteColor, // Set navigation bar color
+      systemNavigationBarIconBrightness: Brightness.light,
     ));
     return StreamProvider<UserData?>(
       create: (context) => _auth.userChanges,
@@ -50,7 +51,16 @@ class MyApp extends StatelessWidget {
           child: MaterialApp(
             debugShowCheckedModeBanner: false,
             initialRoute: '/',
-            theme: ThemeData(useMaterial3: true, fontFamily: 'Inter'),
+            theme: ThemeData(
+                useMaterial3: true,
+                fontFamily: 'Inter',
+                scrollbarTheme: ScrollbarThemeData(
+                    thumbColor:
+                        MaterialStateProperty.all(ColorConstants.iconColor),
+                    trackColor: MaterialStateProperty.all(
+                        ColorConstants.deepBlueColor.withOpacity(0.2)),
+                    thickness: MaterialStateProperty.all(8.0),
+                    radius: const Radius.circular(10))),
             onGenerateRoute: routes,
             builder: (context, child) => SafeArea(
               child: Scaffold(

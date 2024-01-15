@@ -12,6 +12,13 @@ class CustomSnackBar {
           borderRadius: BorderRadius.circular(16.0),
         ),
         behavior: SnackBarBehavior.floating,
+        action: SnackBarAction(
+          label: 'OK',
+          textColor: Colors.white,
+          onPressed: () {
+            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+          },
+        ),
       ),
     );
   }

@@ -3,6 +3,8 @@ import 'package:hive/hive.dart';
 
 class HiveService {
   static const String boxName = "TodoData";
+  // static const String boxName = "TodoManager";
+
   static final todoBox = Hive.box<TodoItem>(HiveService.boxName);
   static Future<Box<TodoItem>> openTodoBox = Hive.openBox<TodoItem>(boxName);
 
@@ -10,11 +12,6 @@ class HiveService {
     Box<TodoItem> box = await openTodoBox;
     await box.put(todoItem.id, todoItem);
   }
-
-  // static Future<void> updateTodoData(int index, TodoItem todoItem) async {
-  //   Box<TodoItem> box = await openTodoBox;
-  //   await box.putAt(index, todoItem);
-  // }
 
   static Future<void> updateTodoData(TodoItem todoItem) async {
     Box<TodoItem> box = await openTodoBox;
@@ -33,10 +30,7 @@ class HiveService {
     return box.values.toList();
   }
 
-  // static Future<void> deleteTodoData(int index) async {
-  //   Box<TodoItem> box = await openTodoBox;
-  //   await box.deleteAt(index);
-  // }
+
 
   static Future<void> deleteTodoData(String id) async {
     Box<TodoItem> box = await openTodoBox;
@@ -53,3 +47,4 @@ class HiveService {
     await box.close();
   }
 }
+

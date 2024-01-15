@@ -4,6 +4,7 @@ import 'package:doitnow/utils/colors/color_constant.dart';
 import 'package:doitnow/utils/components/custom_loader.dart';
 import 'package:doitnow/utils/components/custom_tabbutton.dart';
 import 'package:doitnow/utils/components/todo_tile.dart';
+import 'package:doitnow/utils/constants/constant.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -70,24 +71,32 @@ class _CompletedTodoPageState extends State<CompletedTodoPage> {
                     fontWeight: FontWeight.w600)),
           ),
           body: Container(
+              width: Constants.deviceMaxWidth(context),
+              padding: const EdgeInsets.only(top: 22, left: 7, right: 7),
               color: ColorConstants.plainGreyColor,
               child: ValueListenableBuilder(
                   valueListenable: _todoBox.listenable(),
                   builder: (context, Box<TodoItem> todos, child) {
                     var completedTodos =
                         todos.values.where((todo) => todo.isCompleted).toList();
-                    return ListView.builder(
-                        itemCount: completedTodos.length,
-                        itemBuilder: (context, index) {
-                          var todo = completedTodos[index];
-                          debugPrint('$todo');
-                          return TodoTile(
-                            title: todo.title,
-                            description: todo.description,
-                            todoStatus: todo.isCompleted,
-                            isCompleted: () => _isCompleted(todo),
-                          );
-                        });
+                    return Scrollbar(
+                      child: RefreshIndicator(
+                        color: ColorConstants.deepBlueColor,
+                            onRefresh: HiveService.getTodoData,
+                        child: ListView.builder(
+                            itemCount: completedTodos.length,
+                            itemBuilder: (context, index) {
+                              var todo = completedTodos[index];
+                              debugPrint('$todo');
+                              return TodoTile(
+                                title: todo.title,
+                                description: todo.description,
+                                todoStatus: todo.isCompleted,
+                                isCompleted: () => _isCompleted(todo),
+                              );
+                            }),
+                      ),
+                    );
                   })),
           bottomNavigationBar: BottomAppBar(
             padding: const EdgeInsets.all(0.0),

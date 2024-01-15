@@ -38,25 +38,34 @@ class TodoTile extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text(title,
-                      style: TextStyle(
-                          decoration: todoStatus
-                              ? TextDecoration.lineThrough
-                              : TextDecoration.none,
-                          decorationColor: ColorConstants.deepBlueColor,
-                          color: ColorConstants.deepBlueColor,
-                          fontSize: 13,
-                          fontWeight: FontWeight.w600)),
-                  Text(description,
-                      style: TextStyle(
-                          decoration: todoStatus
-                              ? TextDecoration.lineThrough
-                              : TextDecoration.none,
-                          decorationColor: ColorConstants.deepBlueColor,
-                          color: ColorConstants.deepBlackColor,
-                          fontSize: 10,
-                          fontWeight: FontWeight.w400)),
+                children: [
+                  SizedBox(
+                      width: 200,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(title,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                  decoration: todoStatus
+                                      ? TextDecoration.lineThrough
+                                      : TextDecoration.none,
+                                  decorationColor: ColorConstants.deepBlueColor,
+                                  color: ColorConstants.deepBlueColor,
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w600)),
+                          Text(description,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                  decoration: todoStatus
+                                      ? TextDecoration.lineThrough
+                                      : TextDecoration.none,
+                                  decorationColor: ColorConstants.deepBlueColor,
+                                  color: ColorConstants.deepBlackColor,
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w400)),
+                        ],
+                      )),
                 ],
               ),
               Row(
