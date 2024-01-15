@@ -8,7 +8,11 @@ import 'package:doitnow/utils/validators/validators.dart';
 import 'package:flutter/material.dart';
 
 class EditTodoPage extends StatefulWidget {
-  const EditTodoPage({super.key});
+  final String title;
+  final String description;
+
+  const EditTodoPage(
+      {required this.title, required this.description, super.key});
 
   @override
   State<EditTodoPage> createState() => _EditTodoPageState();
@@ -16,8 +20,8 @@ class EditTodoPage extends StatefulWidget {
 
 class _EditTodoPageState extends State<EditTodoPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController _titleController = TextEditingController();
-  final TextEditingController _detailController = TextEditingController();
+  late TextEditingController _titleController;
+  late TextEditingController _detailController;
 
   bool _isLoading = false;
 
@@ -26,9 +30,11 @@ class _EditTodoPageState extends State<EditTodoPage> {
 
   @override
   void initState() {
+    super.initState();
     _titleFocusNode = FocusNode();
     _detailFocusNode = FocusNode();
-    super.initState();
+    _titleController = TextEditingController(text: widget.title);
+    _detailController = TextEditingController(text: widget.description);
   }
 
   @override
@@ -65,9 +71,6 @@ class _EditTodoPageState extends State<EditTodoPage> {
 
   @override
   Widget build(BuildContext context) {
-    // final TodoItem data =
-    //     ModalRoute.of(context)!.settings.arguments as TodoItem;
-    // _titleController.text = data.title;
     return Stack(
       children: <Widget>[
         Scaffold(
@@ -131,12 +134,13 @@ class _EditTodoPageState extends State<EditTodoPage> {
                           SizedBox(
                             width: 170,
                             child: CustomButton(
-                                buttonName: 'Update', onTap: _updatetodo(1)),
+                                buttonName: 'Update',
+                                onTap: () => _updatetodo(1)),
                           ),
                           SizedBox(
                             width: 170,
                             child: CustomButton(
-                                buttonName: 'Cancel', onTap: _canceltodo),
+                                buttonName: 'Cancel', onTap: () => _canceltodo),
                           ),
                         ],
                       ),

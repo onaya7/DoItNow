@@ -23,7 +23,9 @@ Route routes(RouteSettings settings) {
     case '/addtodo':
       return MaterialPageRoute(builder: (_) => const AddTodoPage());
     case '/edittodo':
-      return MaterialPageRoute(builder: (_) => const EditTodoPage());
+      return MaterialPageRoute(
+          builder: (_) =>
+              const EditTodoPage(title: "", description: ""));
     case '/completedtodo':
       return MaterialPageRoute(builder: (_) => const CompletedTodoPage());
 

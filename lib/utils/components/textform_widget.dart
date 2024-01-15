@@ -10,7 +10,6 @@ class TextFormWidget extends StatelessWidget {
   final TextInputAction action;
   final String? Function(String?)? validator;
 
-
   const TextFormWidget({
     required this.hintText,
     required this.controller,
@@ -24,7 +23,6 @@ class TextFormWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-
       controller: controller,
       focusNode: currentFocus,
       onEditingComplete: () {

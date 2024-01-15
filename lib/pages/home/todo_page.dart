@@ -1,5 +1,5 @@
 import 'package:doitnow/data/todo_item.dart';
-import 'package:doitnow/models/user_model.dart';
+import 'package:doitnow/pages/home/edittodo_page.dart';
 import 'package:doitnow/services/firebase_auth.dart';
 import 'package:doitnow/services/hiveservice.dart';
 import 'package:doitnow/utils/colors/color_constant.dart';
@@ -9,7 +9,6 @@ import 'package:doitnow/utils/components/todo_tile.dart';
 import 'package:doitnow/utils/constants/constant.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:provider/provider.dart';
 
 class TodoPage extends StatefulWidget {
   const TodoPage({super.key});
@@ -60,8 +59,14 @@ class _TodoPageState extends State<TodoPage> {
     });
   }
 
-  _editTodo() {
-    //   Navigator.pushNamed(context, '/edittodo', arguments: {index, value});
+  _editTodo(String title, String description) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => EditTodoPage(
+                  title: title,
+                  description: description,
+                )));
   }
 
   _deleteTodo(int index) async {
@@ -78,7 +83,7 @@ class _TodoPageState extends State<TodoPage> {
 
   @override
   Widget build(BuildContext context) {
-    final UserData? user = Provider.of<UserData?>(context);
+    // final UserData? user = Provider.of<UserData?>(context);
     return Stack(
       children: <Widget>[
         Scaffold(
@@ -111,19 +116,13 @@ class _TodoPageState extends State<TodoPage> {
                         itemBuilder: (context, index) {
                           var todo = todos.getAt(index);
                           return TodoTile(
-                            title: todo!.title,
-                            description: todo.description,
-                            todoStatus: todo.isCompleted,
-                            isCompleted: () {
-                              _isCompleted(index, todo);
-                            },
-                            editTodo: () {
-                              _editTodo();
-                            },
-                            deleteTodo: () {
-                              _deleteTodo(index);
-                            },
-                          );
+                              title: todo!.title,
+                              description: todo.description,
+                              todoStatus: todo.isCompleted,
+                              isCompleted: () => _isCompleted(index, todo),
+                              editTodo: () =>
+                                  _editTodo(todo.title, todo.description),
+                              deleteTodo: () => _deleteTodo(index));
                         }),
               )),
           floatingActionButton: SizedBox(
@@ -172,4 +171,13 @@ class _TodoPageState extends State<TodoPage> {
       ],
     );
   }
+}
+
+class TodoData {
+  final String title;
+  final String description;
+  final int index;
+
+  TodoData(
+      {required this.title, required this.description, required this.index});
 }
