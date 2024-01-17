@@ -94,62 +94,67 @@ class _EditTodoPageState extends State<EditTodoPage> {
                       fontSize: 24,
                       fontWeight: FontWeight.w600)),
             ),
-            body: Container(
-                color: ColorConstants.plainWhiteColor,
-                width: Constants.deviceMaxWidth(context),
-                child: Column(
-                  children: <Widget>[
-                    Padding(
-                      padding:
-                          const EdgeInsets.only(top: 29, left: 29, right: 29),
-                      child: Form(
-                        key: _formKey,
-                        child: Column(
-                          children: <Widget>[
-                            TextFormWidget(
-                              hintText: 'Title',
-                              controller: _titleController,
-                              currentFocus: _titleFocusNode,
-                              nextFocus: _detailFocusNode,
-                              action: TextInputAction.next,
-                              validator: (value) =>
-                                  TodoValidator.validateTitle(value),
+            body: SingleChildScrollView(
+              child: Container(
+                  color: ColorConstants.plainWhiteColor,
+                  width: Constants.deviceMaxWidth(context),
+                  child: Column(
+                    children: <Widget>[
+                      Padding(
+                        padding:
+                            const EdgeInsets.only(top: 29, left: 29, right: 29),
+                        child: Form(
+                          key: _formKey,
+                          child: Column(
+                            children: <Widget>[
+                              TextFormWidget(
+                                hintText: 'Title',
+                                controller: _titleController,
+                                currentFocus: _titleFocusNode,
+                                nextFocus: _detailFocusNode,
+                                action: TextInputAction.next,
+                                validator: (value) =>
+                                    TodoValidator.validateTitle(value),
+                                maxLines: 1,
+                              ),
+                              const SizedBox(height: 43),
+                              TextFormWidget(
+                                hintText: 'Detail',
+                                controller: _detailController,
+                                currentFocus: _detailFocusNode,
+                                action: TextInputAction.newline,
+                                validator: (value) =>
+                                    TodoValidator.validateDescription(value),
+                                maxLines: null,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding:
+                            const EdgeInsets.only(top: 54, left: 14, right: 14),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            SizedBox(
+                              width: 170,
+                              child: CustomButton(
+                                  buttonName: 'Update',
+                                  onTap: () => _updatetodo()),
                             ),
-                            const SizedBox(height: 43),
-                            TextFormWidget(
-                              hintText: 'Detail',
-                              controller: _detailController,
-                              currentFocus: _detailFocusNode,
-                              action: TextInputAction.done,
-                              validator: (value) =>
-                                  TodoValidator.validateDescription(value),
+                            SizedBox(
+                              width: 170,
+                              child: CustomButton(
+                                  buttonName: 'Cancel',
+                                  onTap: () => _canceltodo()),
                             ),
                           ],
                         ),
-                      ),
-                    ),
-                    Padding(
-                      padding:
-                          const EdgeInsets.only(top: 54, left: 14, right: 14),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          SizedBox(
-                            width: 170,
-                            child: CustomButton(
-                                buttonName: 'Update',
-                                onTap: () => _updatetodo()),
-                          ),
-                          SizedBox(
-                            width: 170,
-                            child: CustomButton(
-                                buttonName: 'Cancel', onTap: () => _canceltodo()),
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
-                ))),
+                      )
+                    ],
+                  )),
+            )),
       ],
     );
   }

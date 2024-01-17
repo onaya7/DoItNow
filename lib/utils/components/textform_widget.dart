@@ -9,6 +9,7 @@ class TextFormWidget extends StatelessWidget {
   final FocusNode? nextFocus;
   final TextInputAction action;
   final String? Function(String?)? validator;
+  final dynamic maxLines;
 
   const TextFormWidget({
     required this.hintText,
@@ -17,12 +18,14 @@ class TextFormWidget extends StatelessWidget {
     this.nextFocus,
     required this.action,
     required this.validator,
+    required this.maxLines,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      maxLines: maxLines,
       controller: controller,
       focusNode: currentFocus,
       onEditingComplete: () {

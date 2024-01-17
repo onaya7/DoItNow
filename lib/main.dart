@@ -10,19 +10,30 @@ import 'package:doitnow/utils/routes/routes.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:provider/provider.dart';
 
 import 'firebase_options.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  await initialization();
+}
+
+Future initialization() async {
+  debugPrint('ready in 3...');
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  debugPrint('ready in 2...');
   await Hive.initFlutter();
   Hive.registerAdapter(TodoItemAdapter());
+  debugPrint('ready in 1...');
   await HiveService.openTodoBox;
+  debugPrint('ready in 0...');
+  FlutterNativeSplash.remove();
   runApp(MyApp());
 }
 

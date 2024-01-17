@@ -42,7 +42,6 @@ class RegisterValidators {
   }
 }
 
-
 class LoginValidators {
   static String? validateEmail(String? value) {
     if (value == null || value.isEmpty) {
@@ -63,7 +62,7 @@ class LoginValidators {
   }
 }
 
-class TodoValidator{
+class TodoValidator {
   static String? validateTitle(String? value) {
     if (value == null || value.isEmpty) {
       return '*Please enter a title';

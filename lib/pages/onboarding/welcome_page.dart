@@ -17,6 +17,7 @@ class WelcomePage extends StatelessWidget {
         width: Constants.deviceMaxWidth(context),
         height: Constants.deviceMaxHeight(context),
         child: Column(
+          
           children: [
             Container(
               padding: const EdgeInsets.only(
