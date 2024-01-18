@@ -83,7 +83,7 @@ DoItNow is a simple task management system built with Flutter, Firebase, and Hiv
 
 To get started with DoItNow, follow these steps:
 
-1. Clone the repository: `git clone https://github.com/your-username/doitnow.git`
+1. Clone the repository: `git clone https://github.com/onaya7/DoItNow.git`
 2. Open the project in your preferred IDE or text editor.
 3. Run `flutter pub get` to install the dependencies.
 4. Configure Firebase for your project and update the necessary Firebase configuration files.
@@ -106,3 +106,7 @@ Doitnow is released under the MIT License, which allows you to use, modify, and 
 ## Contact
 
 If you have any questions or suggestions, feel free to reach out to us at [samuelayano7@gmail.com](mailto:samuelayano7@gmail.com).
+
+## Figma Design Link
+
+https://www.figma.com/file/Rq6s8W1JOnESudB6fciT6O/DoItNow-mobile-app?type=design&node-id=0%3A1&mode=design&t=FtyTJrslwdGy7yIG-1
