@@ -4,10 +4,6 @@ DoItNow is a simple task management system built with Flutter, Firebase, and Hiv
 
 ## Screenshots
 
-![Screen 1](screenshots/screen1.png)
-![Screen 2](screenshots/screen2.png)
-![Screen 3](screenshots/screen3.png)
-
 ![Screen 1](https://github.com/onaya7/DoItNow/assets/63925047/1db9770b-593d-4a64-a5d8-ee34bf122b2f)
 ![Screen 2](https://github.com/onaya7/DoItNow/assets/63925047/17271846-d770-4e1c-b4f4-ad602fb5d6b9)
 ![Screen 3](https://github.com/onaya7/DoItNow/assets/63925047/4babfd4a-a46b-4ef8-a8d5-24a0ecec1b38)
@@ -23,6 +19,7 @@ DoItNow is a simple task management system built with Flutter, Firebase, and Hiv
 ![Screen 13](https://github.com/onaya7/DoItNow/assets/63925047/abf95246-2a35-4776-bd0d-83ba8d91ed6b)
 ![Screen 14](https://github.com/onaya7/DoItNow/assets/63925047/1fd8ed99-5f66-4301-b9ad-3066f07acf52)
 ![Screen 15](https://github.com/onaya7/DoItNow/assets/63925047/f165db20-1a94-4c7a-93f8-e58b119f7561)
+
 ## Features
 
 - User Authentication
