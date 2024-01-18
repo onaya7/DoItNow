@@ -137,7 +137,6 @@ class _TodoPageState extends State<TodoPage> {
                           itemBuilder: (context, index) {
                             var todo = uncompletedTodos[index];
                             debugPrint('$todo');
-
                             return TodoTile(
                               title: todo.title,
                               description: todo.description,
